@@ -5,7 +5,6 @@ import { fetchPosts } from './postsSlice';
 export const PostsList = () => {
   const posts = useSelector((state) => state.posts);
   const { loading } = posts;
-  console.log('posts', posts.posts);
 
   const dispatch = useDispatch();
 
@@ -16,7 +15,7 @@ export const PostsList = () => {
   const renderedPost =
     posts.posts &&
     posts.posts.map((post, index) => (
-      <article key={index}>
+      <article key={index} className='container py-4 px-3 mx-auto'>
         <h3>{post.title}</h3>
         <p>{post.content.substring(0, 100)}</p>
       </article>

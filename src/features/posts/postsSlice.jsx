@@ -6,7 +6,6 @@ export const fetchPosts = createAsyncThunk('posts/fetchPosts', async () => {
     'https://opensheet.elk.sh/10DE07ZmtneIpeQzukJLo16BJAtv01t44msvb6_NlD9k/sheet1'
   );
   const data = response.data;
-  console.log('data', data);
   return data;
 });
 
