@@ -9,6 +9,20 @@ export const fetchPosts = createAsyncThunk('posts/fetchPosts', async () => {
   return data;
 });
 
+export const addNewPost = createAsyncThunk(
+  'posts/addNewPost',
+  async (initialPost) => {
+    // we send the initial data to the api server
+    const response = await axios.get(
+      'https://opensheet.elk.sh/10DE07ZmtneIpeQzukJLo16BJAtv01t44msvb6_NlD9k/sheet1',
+      initialPost
+    );
+    // The response includes the complete post object, including unique id
+    const data = response.data;
+    return data;
+  }
+);
+
 const initialState = {
   posts: [],
   status: 'idle',
@@ -35,12 +49,12 @@ const postsSlice = createSlice({
           (newPost) =>
             !state.posts.some((existingPost) => existingPost.id === newPost.id)
         );
-        // We can directly add the new post object to our posts array
+        // We can directly add the new unique post object to our posts array
         state.posts = state.posts.concat(uniquePosts);
+      })
+      .addCase(addNewPost.fulfilled, (state, action) => {
+        state.posts.push(action.payload);
       });
-    // .addCase(addNewPost.fulfilled, (state, action) => {
-    //   state.posts.push(action.payload)
-    // })
   },
 });
 
