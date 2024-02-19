@@ -22,7 +22,7 @@ const PostsList = () => {
       <article key={index} className='card mt-2'>
         <h5 className='card-title'>{post.title}</h5>
         <div className='card-body'>
-          <p>{post.content.substring(0, 100)}</p>
+          <p>{post.content}</p>
           <Link to={`/posts/${post.id}`} className='card-link'>
             View Post
           </Link>

@@ -1,38 +1,67 @@
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { addNewPost } from './postsSlice';
+import { nanoid } from '@reduxjs/toolkit';
 
 export const AddPostForm = () => {
-  const [title, setTitle] = useState();
-  const [content, setContent] = useState();
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
+  const dispatch = useDispatch();
+
+  console.log('title', title);
+  console.log('content', content);
 
   const handleTitleChanged = (e) => setTitle(e.target.value);
   const handleContentChanged = (e) => setContent(e.target.value);
 
+  const handleSubmitButton = async (e) => {
+    e.preventDefault();
+    if (title && content) {
+      try {
+        await dispatch(
+          addNewPost({
+            id: nanoid(),
+            title,
+            content,
+          })
+        );
+        // optionally show success message
+        console.log('Post added successfully!');
+      } catch (error) {
+        // handle error
+        console.error('Error adding post: ', error);
+      }
+      setTitle('');
+      setContent('');
+    }
+  };
+
   return (
     <section>
       <h1>Add a New Post</h1>
-      <form>
+      <form onSubmit={handleSubmitButton}>
         <div className='mb-3'>
-          <label for='postTitle' className='form-label'>
+          <label for='title' className='form-label'>
             Title:
           </label>
           <input
             type='text'
             className='form-control'
-            id='postTitle'
+            id='title'
             aria-describedby='postHelp'
-            name='postTitle'
+            name='title'
             value={title}
             onChange={handleTitleChanged}
           />
         </div>
         <div className='mb-3'>
-          <label for='postContent' className='form-label'>
+          <label for='content' className='form-label'>
             Content:
           </label>
           <textarea
             className='form-control'
-            id='postContent'
-            name='postContent'
+            id='content'
+            name='content'
             value={content}
             onChange={handleContentChanged}
           />
