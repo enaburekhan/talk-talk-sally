@@ -1,21 +1,15 @@
-import { useGetPokemonByNameQuery } from './services/pokemon';
-
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import AddEditPosts from './Pages/addEditPost/AddEditPosts';
+import Navbar from './component/Navbar';
 function App() {
-  console.log('useGetPokemonByName', useGetPokemonByNameQuery);
-  const { data, error, isLoading } = useGetPokemonByNameQuery('bulbasaur');
-  console.log('data', data);
   return (
     <div>
-      {error ? (
-        <>oh no, there was an error</>
-      ) : isLoading ? (
-        <>Loading...</>
-      ) : data ? (
-        <>
-          <h3>{data.species.name}</h3>
-          <img src={data.sprites.front_shiny} alt={data.species.name} />
-        </>
-      ) : null}
+      <Router>
+        <Navbar />
+        <Routes>
+          <Route path='/' element={<AddEditPosts />} />
+        </Routes>
+      </Router>
     </div>
   );
 }
