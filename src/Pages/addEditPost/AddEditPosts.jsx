@@ -3,6 +3,7 @@ import { storage } from '../../services/firebase';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useAddPostsMutation } from '../../services/postsApi';
 
 const initialState = {
   title: '',
@@ -13,6 +14,7 @@ const AddEditPosts = () => {
   const [data, setData] = useState(initialState);
   const [file, setFile] = useState(null);
   const [progress, setProgress] = useState(null);
+  const [addPosts] = useAddPostsMutation();
 
   const { title, content } = data;
 
@@ -53,11 +55,20 @@ const AddEditPosts = () => {
     file && uploadFile();
   }, [file]);
 
-  const handleChange = (e) => {};
+  const handleChange = (e) => {
+    setData({ ...data, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (title && content) {
+      await addPosts(data);
+    }
+  };
   return (
     <section>
       <h2>Add a New Post</h2>
-      <form>
+      <form onSubmit={handleSubmit}>
         <label htmlFor='postTitle'>Post Title:</label>
         <input
           type='text'
@@ -76,7 +87,7 @@ const AddEditPosts = () => {
         <div>
           <input type='file' onChange={(e) => setFile(e.target.files[0])} />
         </div>
-        <button type='button' disabled={progress !== null && progress < 100}>
+        <button type='submit' disabled={progress !== null && progress < 100}>
           Save Post
         </button>
       </form>
