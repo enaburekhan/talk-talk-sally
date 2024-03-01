@@ -1,6 +1,13 @@
 // Need to use the React-specific entry point to import createApi
 import { createApi, fakeBaseQuery } from '@reduxjs/toolkit/query/react';
-import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
+import {
+  addDoc,
+  collection,
+  getDocs,
+  serverTimestamp,
+  query,
+  where,
+} from 'firebase/firestore';
 import { db } from './firebase';
 
 // Define a service using a base URL and expected endpoints
@@ -8,9 +15,27 @@ export const postsApi = createApi({
   reducerPath: 'postsApi',
   baseQuery: fakeBaseQuery(),
   endpoints: (builder) => ({
-    getPosts: builder.query({
-      queryfn() {
-        return { data: 'ok' };
+    fetchPosts: builder.query({
+      queryFn: async () => {
+        try {
+          const postsQuery = query(collection(db, 'posts'));
+          const querySnapshot = await getDocs(postsQuery);
+          let posts = [];
+          console.log('querySnapshot1', querySnapshot);
+          // Extract data from querySnapshot
+          querySnapshot?.forEach((doc) => {
+            posts.push({
+              id: doc.id,
+              ...doc.data(),
+            });
+          });
+
+          console.log('posts', posts);
+          return { data: posts };
+        } catch (err) {
+          console.log('err', err.message);
+          return { error: err.message };
+        }
       },
     }),
     addPosts: builder.mutation({
@@ -28,4 +53,4 @@ export const postsApi = createApi({
   }),
 });
 
-export const { useGetPostsQuery, useAddPostsMutation } = postsApi;
+export const { useFetchPostsQuery, useAddPostsMutation } = postsApi;
