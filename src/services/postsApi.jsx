@@ -6,9 +6,9 @@ import {
   getDocs,
   serverTimestamp,
   query,
-  Timestamp,
   deleteDoc,
   doc,
+  getDoc,
 } from 'firebase/firestore';
 import { db } from './firebase';
 
@@ -27,14 +27,9 @@ export const postsApi = createApi({
           // Extract data from querySnapshot
           querySnapshot?.forEach((doc) => {
             // convert Firestore timestamp to Javascript Date object
-            const timestamp =
-              doc.timestamp instanceof Timestamp
-                ? doc.timestamp.toDate()
-                : null;
             posts.push({
               id: doc.id,
               ...doc.data(),
-              timestamp,
             });
           });
 
@@ -43,6 +38,18 @@ export const postsApi = createApi({
         } catch (err) {
           console.log('err', err.message);
           return { error: err.message };
+        }
+      },
+      providesTags: ['Post'],
+    }),
+    fetchPost: builder.query({
+      async queryFn(id) {
+        try {
+          const docRef = doc(db, 'posts', id);
+          const snapshot = await getDoc(docRef);
+          return { data: snapshot.data() };
+        } catch (err) {
+          return { error: err };
         }
       },
       providesTags: ['Post'],
@@ -79,4 +86,5 @@ export const {
   useFetchPostsQuery,
   useAddPostsMutation,
   useDeletePostMutation,
+  useFetchPostQuery,
 } = postsApi;

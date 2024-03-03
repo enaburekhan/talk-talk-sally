@@ -1,5 +1,11 @@
+import { Link } from 'react-router-dom';
+
 const Navbar = () => {
-  return <div>Hello world!</div>;
+  return (
+    <div>
+      <Link to={'/'}>Posts</Link>
+    </div>
+  );
 };
 
 export default Navbar;

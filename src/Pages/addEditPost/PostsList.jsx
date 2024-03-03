@@ -20,9 +20,12 @@ const PostsList = () => {
     return <h2>Loading...</h2>;
   }
 
-  // if (isError) {
-  //   return <div>Error fetching data: {error.message}</div>;
-  // }
+  const postExcerpt = (str, count) => {
+    if (str.length > count) {
+      str = str.substring(0, count) + ' ...';
+    }
+    return str;
+  };
 
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure to delete?')) {
@@ -37,11 +40,12 @@ const PostsList = () => {
           <div key={post.id}>
             <img src={post.imgURL} alt={post.title} />
             <h3>{post.title}</h3>
-            <p>{post.content}</p>
+            <p>{postExcerpt(post.content, 80)}</p>
+            <Link to={`/detail/${post.id}`}>Read More</Link>
             <button type='button' onClick={() => handleDelete(post.id)}>
               Delete Post
             </button>
-            <Link to={`/update/${post.id}`}></Link>
+            <Link to={`/update/${post.id}`}>Update Post</Link>
           </div>
         ))}
     </div>

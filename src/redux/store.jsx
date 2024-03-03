@@ -10,7 +10,9 @@ export const store = configureStore({
 
   // add the api middleware enables caching, invalidation, polling, and other useful features of rtk-query
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(postsApi.middleware),
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }).concat(postsApi.middleware),
 });
 
 setupListeners(store.dispatch);
