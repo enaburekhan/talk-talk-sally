@@ -6,7 +6,9 @@ import {
   getDocs,
   serverTimestamp,
   query,
-  where,
+  Timestamp,
+  deleteDoc,
+  doc,
 } from 'firebase/firestore';
 import { db } from './firebase';
 
@@ -14,6 +16,7 @@ import { db } from './firebase';
 export const postsApi = createApi({
   reducerPath: 'postsApi',
   baseQuery: fakeBaseQuery(),
+  tagTypes: ['Post'],
   endpoints: (builder) => ({
     fetchPosts: builder.query({
       queryFn: async () => {
@@ -21,12 +24,17 @@ export const postsApi = createApi({
           const postsQuery = query(collection(db, 'posts'));
           const querySnapshot = await getDocs(postsQuery);
           let posts = [];
-          console.log('querySnapshot1', querySnapshot);
           // Extract data from querySnapshot
           querySnapshot?.forEach((doc) => {
+            // convert Firestore timestamp to Javascript Date object
+            const timestamp =
+              doc.timestamp instanceof Timestamp
+                ? doc.timestamp.toDate()
+                : null;
             posts.push({
               id: doc.id,
               ...doc.data(),
+              timestamp,
             });
           });
 
@@ -37,6 +45,7 @@ export const postsApi = createApi({
           return { error: err.message };
         }
       },
+      providesTags: ['Post'],
     }),
     addPosts: builder.mutation({
       async queryFn(data) {
@@ -45,12 +54,29 @@ export const postsApi = createApi({
             ...data,
             timestamp: serverTimestamp(),
           });
+          return { data: 'ok' };
         } catch (err) {
           return { error: err };
         }
       },
+      invalidatesTags: ['Post'],
+    }),
+    deletePost: builder.mutation({
+      async queryFn(id) {
+        try {
+          await deleteDoc(doc(db, 'posts', id));
+          return { data: 'ok' };
+        } catch (err) {
+          return { error: err };
+        }
+      },
+      invalidatesTags: ['Post'],
     }),
   }),
 });
 
-export const { useFetchPostsQuery, useAddPostsMutation } = postsApi;
+export const {
+  useFetchPostsQuery,
+  useAddPostsMutation,
+  useDeletePostMutation,
+} = postsApi;

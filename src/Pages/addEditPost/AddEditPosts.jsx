@@ -45,10 +45,16 @@ const AddEditPosts = () => {
           console.log(error);
         },
         () => {
-          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-            toast.info('Imagee uploaded successfully');
-            setData((prev) => ({ ...prev, imgURL: downloadURL }));
-          });
+          getDownloadURL(uploadTask.snapshot.ref)
+            .then((downloadURL) => {
+              toast.info('Imagee uploaded successfully');
+              setData((prev) => ({ ...prev, imgURL: downloadURL }));
+            })
+            .catch((error) => {
+              // Handle error gracefully
+              console.error('Error getting download URL: ', error);
+              toast.error('Error Uploading image');
+            });
         }
       );
     };
@@ -62,8 +68,16 @@ const AddEditPosts = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (title && content) {
-      await addPosts(data);
+      const result = await addPosts(data);
+
+      if (result && result.error) {
+        console.error('Error add post:', result.error);
+        // Handle error appropriately (e.g. show a toast, display an error message)
+      }
     }
+    // Clear the form or perform any other necessary actions upon successful submission
+    setData(initialState);
+    setFile(null);
   };
   return (
     <section>
