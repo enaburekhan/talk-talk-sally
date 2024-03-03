@@ -4,6 +4,7 @@ const Navbar = () => {
   return (
     <div>
       <Link to={'/'}>Posts</Link>
+      <Link to={'/addPost'}>AddPost</Link>
     </div>
   );
 };

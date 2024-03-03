@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import {
   useDeletePostMutation,
   useFetchPostsQuery,
-} from '../../services/postsApi';
+} from '../services/postsApi';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 

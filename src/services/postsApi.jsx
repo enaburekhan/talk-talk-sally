@@ -9,6 +9,7 @@ import {
   deleteDoc,
   doc,
   getDoc,
+  updateDoc,
 } from 'firebase/firestore';
 import { db } from './firebase';
 
@@ -79,6 +80,20 @@ export const postsApi = createApi({
       },
       invalidatesTags: ['Post'],
     }),
+    updatePost: builder.mutation({
+      async queryFn({ id, data }) {
+        try {
+          await updateDoc(doc(db, 'posts', id), {
+            ...data,
+            timestamp: serverTimestamp(),
+          });
+          return { data: 'ok' };
+        } catch (err) {
+          return { error: err };
+        }
+      },
+      invalidatesTags: ['Post'],
+    }),
   }),
 });
 
@@ -87,4 +102,5 @@ export const {
   useAddPostsMutation,
   useDeletePostMutation,
   useFetchPostQuery,
+  useUpdatePostMutation,
 } = postsApi;

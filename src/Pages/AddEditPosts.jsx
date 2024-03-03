@@ -1,9 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { storage } from '../../services/firebase';
+import { storage } from '../services/firebase';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useAddPostsMutation } from '../../services/postsApi';
+import {
+  useAddPostsMutation,
+  useFetchPostQuery,
+  useUpdatePostMutation,
+} from '../services/postsApi';
+import { useNavigate, useParams } from 'react-router-dom';
+import { skipToken } from '@reduxjs/toolkit/query';
 
 const initialState = {
   title: '',
@@ -15,8 +21,18 @@ const AddEditPosts = () => {
   const [file, setFile] = useState(null);
   const [progress, setProgress] = useState(null);
   const [addPosts] = useAddPostsMutation();
+  const { id } = useParams();
+  const { data: post } = useFetchPostQuery(id ? id : skipToken);
+  const [updatePost] = useUpdatePostMutation();
+  const navigate = useNavigate();
 
   const { title, content } = data;
+
+  useEffect(() => {
+    if (id && post) {
+      setData({ ...post });
+    }
+  }, [id, post]);
 
   useEffect(() => {
     const uploadFile = () => {
@@ -68,20 +84,28 @@ const AddEditPosts = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (title && content) {
-      const result = await addPosts(data);
+      if (!id) {
+        const result = await addPosts(data);
 
-      if (result && result.error) {
-        console.error('Error add post:', result.error);
-        // Handle error appropriately (e.g. show a toast, display an error message)
+        if (result && result.error) {
+          console.error('Error add post:', result.error);
+          // Handle error appropriately (e.g. show a toast, display an error message)
+        }
+        // Clear the form or perform any other necessary actions upon successful submission
+        setData(initialState);
+        setFile(null);
+        toast.success('Blog Added Successfully');
+        navigate('/');
+      } else {
+        await updatePost({ id, data });
+        toast.success('Blog Added Successfully');
+        navigate('/');
       }
     }
-    // Clear the form or perform any other necessary actions upon successful submission
-    setData(initialState);
-    setFile(null);
   };
   return (
     <section>
-      <h2>Add a New Post</h2>
+      <h2>{id ? 'Update a Post' : 'Add a New Post'}</h2>
       <form onSubmit={handleSubmit}>
         <label htmlFor='postTitle'>Post Title:</label>
         <input
@@ -102,7 +126,7 @@ const AddEditPosts = () => {
           <input type='file' onChange={(e) => setFile(e.target.files[0])} />
         </div>
         <button type='submit' disabled={progress !== null && progress < 100}>
-          Save Post
+          {id ? 'Update Post' : 'Save Post'}
         </button>
       </form>
     </section>
