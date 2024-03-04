@@ -14,6 +14,7 @@ import { skipToken } from '@reduxjs/toolkit/query';
 const initialState = {
   title: '',
   content: '',
+  author: '',
 };
 
 const AddEditPosts = () => {
@@ -26,7 +27,7 @@ const AddEditPosts = () => {
   const [updatePost] = useUpdatePostMutation();
   const navigate = useNavigate();
 
-  const { title, content } = data;
+  const { title, content, author } = data;
 
   useEffect(() => {
     if (id && post) {
@@ -83,7 +84,7 @@ const AddEditPosts = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (title && content) {
+    if (title && content && author) {
       if (!id) {
         const result = await addPosts(data);
 
@@ -109,7 +110,7 @@ const AddEditPosts = () => {
       <form onSubmit={handleSubmit}>
         <label htmlFor='postTitle'>Post Title:</label>
         <input
-          type='text'
+          type='string'
           id='title'
           name='title'
           value={title}
@@ -117,9 +118,18 @@ const AddEditPosts = () => {
         />
         <label htmlFor='postContent'>Content:</label>
         <textarea
+          type='text'
           id='content'
           name='content'
           value={content}
+          onChange={handleChange}
+        />
+        <label htmlFor='postAuthor'>Author:</label>
+        <input
+          type='string'
+          id='author'
+          name='author'
+          value={author}
           onChange={handleChange}
         />
         <div>

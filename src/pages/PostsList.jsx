@@ -48,12 +48,13 @@ const PostsList = () => {
         <div key={post.id}>
           <img src={post.imgURL} alt={post.title} />
           <h3>{post.title}</h3>
+          <p>{post.author}</p>
           <p>{postExcerpt(post.content, 80)}</p>
           <div>
             <span>Created at - &nbsp;</span>
             <small>{post?.timestamp.toDate().toLocaleString()}</small>
           </div>
-          <Link to={`/detail/${post.id}`}>Read More</Link>
+          <Link to={`/detail/${post.id}`}>View Post</Link>
           <button type='button' onClick={() => handleDelete(post.id)}>
             Delete Post
           </button>
