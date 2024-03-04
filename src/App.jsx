@@ -1,10 +1,10 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
-import AddEditPosts from './Pages/AddEditPosts';
+import AddEditPosts from './pages/AddEditPosts';
 import Navbar from './component/Navbar';
-import PostsList from './Pages/PostsList';
-import PostDetail from './Pages/PostDetail';
+import PostsList from './pages/PostsList';
+import PostDetail from './pages/PostDetail';
 function App() {
   return (
     <div>

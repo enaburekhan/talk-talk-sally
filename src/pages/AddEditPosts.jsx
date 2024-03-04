@@ -63,7 +63,7 @@ const AddEditPosts = () => {
         () => {
           getDownloadURL(uploadTask.snapshot.ref)
             .then((downloadURL) => {
-              toast.info('Imagee uploaded successfully');
+              toast.info('Image uploaded successfully');
               setData((prev) => ({ ...prev, imgURL: downloadURL }));
             })
             .catch((error) => {
@@ -94,11 +94,11 @@ const AddEditPosts = () => {
         // Clear the form or perform any other necessary actions upon successful submission
         setData(initialState);
         setFile(null);
-        toast.success('Blog Added Successfully');
+        toast.success('Post Added Successfully');
         navigate('/');
       } else {
         await updatePost({ id, data });
-        toast.success('Blog Added Successfully');
+        toast.success('Post Updated Successfully');
         navigate('/');
       }
     }
