@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom';
-import { useFetchPostQuery } from '../services/postsApi';
+import { useFetchPostQuery } from '../utils/postsApi';
 import { skipToken } from '@reduxjs/toolkit/query';
 import { useEffect } from 'react';
 

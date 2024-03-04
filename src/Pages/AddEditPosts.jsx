@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { storage } from '../services/firebase';
+import { storage } from '../utils/firebase';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -7,7 +7,7 @@ import {
   useAddPostsMutation,
   useFetchPostQuery,
   useUpdatePostMutation,
-} from '../services/postsApi';
+} from '../utils/postsApi';
 import { useNavigate, useParams } from 'react-router-dom';
 import { skipToken } from '@reduxjs/toolkit/query';
 
@@ -126,7 +126,7 @@ const AddEditPosts = () => {
           <input type='file' onChange={(e) => setFile(e.target.files[0])} />
         </div>
         <button type='submit' disabled={progress !== null && progress < 100}>
-          {id ? 'Update Post' : 'Save Post'}
+          {id ? 'Update Post' : 'Add Post'}
         </button>
       </form>
     </section>
