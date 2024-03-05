@@ -11,15 +11,16 @@ const PostDetail = () => {
     isError && toast.error(error);
   }, [isError]);
   return (
-    <>
+    <div key={post?.id}>
       <img src={post?.imgURL} alt={post?.title} />
-      <h2>{post?.title}</h2>
+      <h3>{post?.title}</h3>
+      <p>{post?.author}</p>
+      <p>{post?.content}</p>
       <div>
         <span>Created at - &nbsp;</span>
         <small>{post?.timestamp.toDate().toLocaleString()}</small>
       </div>
-      <p>{post?.content}</p>
-    </>
+    </div>
   );
 };
 

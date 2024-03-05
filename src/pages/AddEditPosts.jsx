@@ -27,8 +27,6 @@ const AddEditPosts = () => {
   const [updatePost] = useUpdatePostMutation();
   const navigate = useNavigate();
 
-  console.log('data', data);
-
   const { title, content, author } = data;
 
   useEffect(() => {

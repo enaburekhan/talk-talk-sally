@@ -13,10 +13,10 @@ const PostsList = () => {
     let postSorted = posts.slice();
     // Sort post in descending chronological order
     postSorted?.sort((a, b) =>
-      a.timestamp
+      b.timestamp
         .toDate()
         .toLocaleString()
-        .localeCompare(b.timestamp.toDate().toLocaleString())
+        .localeCompare(a.timestamp.toDate().toLocaleString())
     );
     return postSorted;
   }, [posts]);

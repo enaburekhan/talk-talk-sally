@@ -35,8 +35,6 @@ export const postsApi = createApi({
               reactions: data.reactions || {},
             });
           });
-
-          console.log('posts', posts);
           return { data: posts };
         } catch (err) {
           console.log('err', err.message);
