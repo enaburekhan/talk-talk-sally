@@ -3,6 +3,7 @@ import { useDeletePostMutation, useFetchPostsQuery } from '../utils/postsApi';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import Spinner from '../component/Spinner';
+import ReactionButtons from '../component/ReactionButtons';
 
 const PostsList = () => {
   // console.log('useFetchPostsQuery', useFetchPostsQuery);
@@ -30,7 +31,7 @@ const PostsList = () => {
   }
 
   const postExcerpt = (str, count) => {
-    if (str.length > count) {
+    if (str && str.length > count) {
       str = str.substring(0, count) + ' ...';
     }
     return str;
@@ -54,6 +55,7 @@ const PostsList = () => {
             <span>Created at - &nbsp;</span>
             <small>{post?.timestamp.toDate().toLocaleString()}</small>
           </div>
+          <div>{<ReactionButtons post={post} />}</div>
           <Link to={`/detail/${post.id}`}>View Post</Link>
           <button type='button' onClick={() => handleDelete(post.id)}>
             Delete Post

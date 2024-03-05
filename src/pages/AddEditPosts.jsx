@@ -27,6 +27,8 @@ const AddEditPosts = () => {
   const [updatePost] = useUpdatePostMutation();
   const navigate = useNavigate();
 
+  console.log('data', data);
+
   const { title, content, author } = data;
 
   useEffect(() => {
@@ -89,8 +91,8 @@ const AddEditPosts = () => {
         const result = await addPosts(data);
 
         if (result && result.error) {
-          console.error('Error add post:', result.error);
           // Handle error appropriately (e.g. show a toast, display an error message)
+          console.error('Error add post:', result.error);
         }
         // Clear the form or perform any other necessary actions upon successful submission
         setData(initialState);
