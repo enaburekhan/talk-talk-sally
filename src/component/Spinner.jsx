@@ -1,10 +1,10 @@
-import { ClipLoader } from 'react-spinners';
+import { CircularProgress, CircularProgressLabel } from '@chakra-ui/react';
 
 const Spinner = () => {
   return (
-    <div style={{ width: '100px', margin: 'auto', display: 'block' }}>
-      <ClipLoader color='#52bfd9' size={100} />
-    </div>
+    <CircularProgress value={40} color='green.400'>
+      <CircularProgressLabel>40%</CircularProgressLabel>
+    </CircularProgress>
   );
 };
 
