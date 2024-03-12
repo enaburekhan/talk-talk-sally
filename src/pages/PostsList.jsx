@@ -17,7 +17,6 @@ import {
   Image,
   Text,
   Button,
-  HStack,
   Input,
   SimpleGrid,
 } from '@chakra-ui/react';
@@ -75,7 +74,7 @@ const PostsList = () => {
   };
 
   return (
-    <Flex direction='column' justify='center' align='center' mt='5px'>
+    <Flex direction='column' justify='center' align='center' mt='5px' gap={6}>
       <Stack spacing={3} width={{ base: '90%', md: '500px' }}>
         <Input
           type='search'
@@ -85,10 +84,18 @@ const PostsList = () => {
         />
       </Stack>
       <Box as='section'>
-        <Grid templateColumns='repeat(4, 1fr)' gap={6}>
+        <Grid
+          templateColumns={{
+            base: 'repeat(1, 1fr)',
+            sm: 'repeat(2, 1fr)',
+            md: 'repeat(3, 1fr)',
+            lg: 'repeat(4, 1fr)',
+          }}
+          gap={4}
+        >
           {filteredPosts.length > 0
             ? filteredPosts?.map((post) => (
-                <Card maxW='sm' key={post.id} className='main-card'>
+                <Card maxW='sm' key={post.id}>
                   <CardBody>
                     <Image
                       src={post.imgURL}
@@ -108,21 +115,27 @@ const PostsList = () => {
                   </CardBody>
                   <Divider />
                   <CardFooter>
-                    <HStack spacing={4} align='center'>
+                    <SimpleGrid
+                      columns={{ base: 1, md: 2, lg: 4 }}
+                      spacing={4}
+                      align='center'
+                    >
                       <Box fontSize='sm'>{<ReactionButtons post={post} />}</Box>
                       <CustomButtonLink
                         to={`/detail/${post.id}`}
                         fontSize='12px'
-                        color='#333'
-                        backgroundColor='navyblue.500'
+                        color='#fff'
+                        backgroundColor='blue.500'
+                        _hover={{ backgroundColor: 'blue.400' }}
                       >
                         View Post
                       </CustomButtonLink>
                       <CustomButtonLink
                         to={`/update/${post.id}`}
-                        color='#333'
-                        fontSize='12px'
-                        backgroundColor='#5079bf.500'
+                        color='#fff'
+                        fontSize='11px'
+                        backgroundColor='blue.400'
+                        _hover={{ backgroundColor: 'blue.300' }}
                       >
                         Update Post
                       </CustomButtonLink>
@@ -135,7 +148,7 @@ const PostsList = () => {
                       >
                         Delete Post
                       </Button>
-                    </HStack>
+                    </SimpleGrid>
                   </CardFooter>
                 </Card>
               ))
@@ -161,21 +174,27 @@ const PostsList = () => {
                   </CardBody>
                   <Divider />
                   <CardFooter>
-                    <HStack spacing={4} align='center'>
+                    <SimpleGrid
+                      columns={{ base: 1, md: 2, lg: 4 }}
+                      spacing={4}
+                      align='center'
+                    >
                       <Box fontSize='sm'>{<ReactionButtons post={post} />}</Box>
                       <CustomButtonLink
                         to={`/detail/${post.id}`}
                         fontSize='12px'
                         color='#333'
-                        backgroundColor='navyblue.500'
+                        backgroundColor='Blue.500'
+                        _hover={{ backgroundColor: 'blue.400' }}
                       >
                         View Post
                       </CustomButtonLink>
                       <CustomButtonLink
                         to={`/update/${post.id}`}
                         color='#333'
-                        fontSize='12px'
-                        backgroundColor='#5079bf.500'
+                        fontSize='11px'
+                        backgroundColor='blue.500'
+                        _hover={{ backgroundColor: 'blue.300' }}
                       >
                         Update Post
                       </CustomButtonLink>
@@ -188,7 +207,7 @@ const PostsList = () => {
                       >
                         Delete Post
                       </Button>
-                    </HStack>
+                    </SimpleGrid>
                   </CardFooter>
                 </Card>
               ))}

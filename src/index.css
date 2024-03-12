@@ -7,9 +7,4 @@
 }
 
 @media screen and (width <= 768px) {
-  .main-card {
-    display: grid;
-    grid-template-columns: 1fr, 1fr;
-    background-color: black;
-  }
 }
