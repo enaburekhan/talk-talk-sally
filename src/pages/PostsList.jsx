@@ -1,7 +1,6 @@
 import { useEffect, useMemo } from 'react';
 import { useDeletePostMutation, useFetchPostsQuery } from '../utils/postsApi';
 import { toast } from 'react-toastify';
-import Spinner from '../component/Spinner';
 import ReactionButtons from '../component/ReactionButtons';
 import { useState } from 'react';
 import {
@@ -19,6 +18,7 @@ import {
   Button,
   Input,
   SimpleGrid,
+  Spinner,
 } from '@chakra-ui/react';
 import CustomButtonLink from '../component/CustomButtonLink';
 
@@ -56,7 +56,17 @@ const PostsList = () => {
   }, [isError]);
 
   if (isLoading) {
-    return <Spinner />;
+    return (
+      <Flex align='center' justify='center' h='50vh'>
+        <Spinner
+          thickness='4px'
+          speed='0.65s'
+          emptyColor='gray.200'
+          color='blue.500'
+          size='xl'
+        />
+      </Flex>
+    );
   }
 
   const postExcerpt = (str, count) => {
