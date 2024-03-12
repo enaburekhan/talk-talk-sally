@@ -1,10 +1,16 @@
-import { CircularProgress, CircularProgressLabel } from '@chakra-ui/react';
+import {
+  Flex,
+  CircularProgress,
+  CircularProgressLabel,
+} from '@chakra-ui/react';
 
 const Spinner = () => {
   return (
-    <CircularProgress value={40} color='green.400'>
-      <CircularProgressLabel>40%</CircularProgressLabel>
-    </CircularProgress>
+    <Flex align='center' justify='center' h='50vh'>
+      <CircularProgress value={40} color='green.400'>
+        <CircularProgressLabel>40%</CircularProgressLabel>
+      </CircularProgress>
+    </Flex>
   );
 };
 
