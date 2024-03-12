@@ -12,6 +12,7 @@ import {
   Image,
   Text,
   SimpleGrid,
+  Box,
 } from '@chakra-ui/react';
 const PostDetail = () => {
   const { id } = useParams();
@@ -21,29 +22,31 @@ const PostDetail = () => {
     isError && toast.error(error);
   }, [isError]);
   return (
-    <Card maxW='sm' key={post?.id}>
-      <CardBody>
-        <Image src={post?.imgURL} alt={post?.title} borderRadius='lg' />
-        <Stack mt='6' spacing='3'>
-          <CardHeader size='md'>{post?.title}</CardHeader>
-          <Text>{post?.content}</Text>
-          <Text fontSize='14px' color='#333'>
-            Author: {post?.author}
-          </Text>
-          <Text color='blue.600' fontSize='10px'>
-            Created on: {post?.timestamp.toDate().toLocaleString()}
-          </Text>
-        </Stack>
-      </CardBody>
-      <Divider />
-      <CardFooter>
-        <SimpleGrid
-          columns={{ base: 1, md: 2, lg: 4 }}
-          spacing={4}
-          align='center'
-        ></SimpleGrid>
-      </CardFooter>
-    </Card>
+    <Box maxW='600px' mx='auto' mt='6'>
+      <Card maxW='sm' key={post?.id}>
+        <CardBody>
+          <Image src={post?.imgURL} alt={post?.title} borderRadius='lg' />
+          <Stack mt='6' spacing='3'>
+            <CardHeader size='md'>{post?.title}</CardHeader>
+            <Text>{post?.content}</Text>
+            <Text fontSize='14px' color='#333'>
+              Author: {post?.author}
+            </Text>
+            <Text color='blue.600' fontSize='10px'>
+              Created on: {post?.timestamp.toDate().toLocaleString()}
+            </Text>
+          </Stack>
+        </CardBody>
+        <Divider />
+        <CardFooter>
+          <SimpleGrid
+            columns={{ base: 1, md: 2, lg: 4 }}
+            spacing={4}
+            align='center'
+          ></SimpleGrid>
+        </CardFooter>
+      </Card>
+    </Box>
   );
 };
 

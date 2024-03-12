@@ -10,6 +10,15 @@ import {
 } from '../utils/postsApi';
 import { useNavigate, useParams } from 'react-router-dom';
 import { skipToken } from '@reduxjs/toolkit/query';
+import {
+  Box,
+  Button,
+  FormControl,
+  FormLabel,
+  Heading,
+  Input,
+  Textarea,
+} from '@chakra-ui/react';
 
 const initialState = {
   title: '',
@@ -104,42 +113,54 @@ const AddEditPosts = () => {
       }
     }
   };
+
   return (
-    <section>
-      <h2>{id ? 'Update a Post' : 'Add a New Post'}</h2>
+    <Box maxW='600px' mx='auto' mt='6'>
+      <Heading>{id ? 'Update a Post' : 'Add a New Post'}</Heading>
       <form onSubmit={handleSubmit}>
-        <label htmlFor='postTitle'>Post Title:</label>
-        <input
-          type='string'
-          id='title'
-          name='title'
-          value={title}
-          onChange={handleChange}
-        />
-        <label htmlFor='postContent'>Content:</label>
-        <textarea
-          type='text'
-          id='content'
-          name='content'
-          value={content}
-          onChange={handleChange}
-        />
-        <label htmlFor='postAuthor'>Author:</label>
-        <input
-          type='string'
-          id='author'
-          name='author'
-          value={author}
-          onChange={handleChange}
-        />
-        <div>
-          <input type='file' onChange={(e) => setFile(e.target.files[0])} />
-        </div>
-        <button type='submit' disabled={progress !== null && progress < 100}>
+        <FormControl mb='4'>
+          <FormLabel htmlFor='postTitle'>Title:</FormLabel>
+          <Input
+            type='string'
+            id='title'
+            name='title'
+            value={title}
+            onChange={handleChange}
+          />
+        </FormControl>
+        <FormControl mb='4'>
+          <FormLabel htmlFor='postContent'>Content:</FormLabel>
+          <Textarea
+            type='text'
+            id='content'
+            name='content'
+            value={content}
+            onChange={handleChange}
+          />
+        </FormControl>
+        <FormControl mb='4'>
+          <FormLabel htmlFor='postAuthor'>Author:</FormLabel>
+          <Input
+            type='string'
+            id='author'
+            name='author'
+            value={author}
+            onChange={handleChange}
+          />
+        </FormControl>
+        <FormControl mb='4'>
+          <FormLabel htmlFor='file'>Upload Image:</FormLabel>
+          <Input type='file' onChange={(e) => setFile(e.target.files[0])} />
+        </FormControl>
+        <Button
+          type='submit'
+          colorScheme='teal'
+          disabled={progress !== null && progress < 100}
+        >
           {id ? 'Update Post' : 'Add Post'}
-        </button>
+        </Button>
       </form>
-    </section>
+    </Box>
   );
 };
 
