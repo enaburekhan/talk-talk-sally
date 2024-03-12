@@ -5,6 +5,7 @@ import AddEditPosts from './pages/AddEditPosts';
 import Navbar from './component/Navbar';
 import PostsList from './pages/PostsList';
 import PostDetail from './pages/PostDetail';
+import './index.css';
 function App() {
   return (
     <div>
