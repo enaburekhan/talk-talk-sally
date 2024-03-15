@@ -91,20 +91,21 @@ const AddEditPosts = () => {
     setData({ ...data, [e.target.name]: e.target.value });
   };
 
-  const validateForm = () => {
+  function validateForm() {
     if (!title.trim() || !content.trim() || !author.trim()) {
       toast.error('Please fill in all fields');
       return false;
-    } else if (!/^[a-zA-Z]+$/.test(title)) {
-      toast.error('Only letters are allowed in title');
+    } else if (!/^[a-zA-Z\s!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~]+$/.test(title)) {
+      toast.error('Only letters, spaces, and special characters are allowed in title');
       return false;
     } else if (!/^[a-zA-Z]+$/.test(author)) {
       toast.error('Only letters are allowed in author');
       return false;
     }
-
+  
     return true;
-  };
+  }
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
