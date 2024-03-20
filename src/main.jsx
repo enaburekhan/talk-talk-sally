@@ -4,6 +4,7 @@ import App from './App.jsx';
 import { store } from './utils/store.jsx';
 import { Provider } from 'react-redux';
 import { ChakraProvider, extendTheme } from '@chakra-ui/react';
+import './index.css';
 
 const colors = {
   brand: {

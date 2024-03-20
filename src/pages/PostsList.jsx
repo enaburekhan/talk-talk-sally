@@ -19,23 +19,25 @@ import {
   Input,
   SimpleGrid,
   Spinner,
+  Link
 } from '@chakra-ui/react';
 import CustomButtonLink from '../component/CustomButtonLink';
+import moment from 'moment/moment';
 
 const PostsList = () => {
   const [searchField, setSearchField] = useState('');
   const { data: posts = [], isLoading, isError, error } = useFetchPostsQuery();
+
   const sortedPosts = useMemo(() => {
-    let postSorted = posts.slice();
-    // Sort post in descending chronological order
-    postSorted?.sort((a, b) =>
-      b.timestamp
-        .toDate()
-        .toLocaleString()
-        .localeCompare(a.timestamp.toDate().toLocaleString())
-    );
-    return postSorted;
+    return [...posts].sort((a, b) => {
+      const dateA = moment(a.timestamp.toDate());
+      const dateB = moment(b.timestamp.toDate());
+      const dateA1 = dateA.format('MMMM Do YYYY, h:mm:ss a');
+      const dateB1 = dateB.format('MMMM Do YYYY, h:mm:ss a');
+      return dateA1.localeCompare(dateB1); 
+    });
   }, [posts]);
+  
 
   // Filter post based on the search query
   const filteredPosts = useMemo(() => {
@@ -84,7 +86,7 @@ const PostsList = () => {
   };
 
   return (
-    <Flex direction='column' justify='center' align='center' mt='5px' gap={6}>
+    <Flex direction='column' justify='center' align='center' mt='5px' gap={6} boxShadow='lg'>
       <Stack spacing={3} width={{ base: '90%', md: '500px' }}>
         <Input
           type='search'
@@ -98,14 +100,14 @@ const PostsList = () => {
           templateColumns={{
             base: 'repeat(1, 1fr)',
             sm: 'repeat(2, 1fr)',
-            md: 'repeat(3, 1fr)',
-            lg: 'repeat(4, 1fr)',
+            md: 'repeat(2, 1fr)',
+            lg: 'repeat(3, 1fr)',
           }}
           gap={4}
         >
           {filteredPosts.length > 0
             ? filteredPosts?.map((post) => (
-                <Card maxW='sm' key={post.id}>
+                <Card maxW='sm' key={post.id} border='20px'>
                   <CardBody>
                     <Image
                       src={post.imgURL}
@@ -114,7 +116,18 @@ const PostsList = () => {
                     />
                     <Stack mt='6' spacing='3'>
                       <CardHeader size='md'>{post.title}</CardHeader>
-                      <Text>{postExcerpt(post.content, 80)}</Text>
+                      <Text>
+                        {postExcerpt(post.content, 80)} &nbsp;
+                        <Link
+                        href={`/detail/${post.id}`}
+                        fontSize='12px'
+                        color= 'blue'
+                        
+                      >
+                        View More
+                      </Link>
+                      </Text>
+                      
                       <Text fontSize='14px' color='#333'>
                         Author: {post.author}
                       </Text>
@@ -126,26 +139,22 @@ const PostsList = () => {
                   <Divider />
                   <CardFooter>
                     <SimpleGrid
-                      columns={{ base: 1, md: 2, lg: 4 }}
-                      spacing={4}
+                      columns={{ base: 1, md: 2, lg: 3 }}
+                      spacing={3}
                       align='center'
+                      justify='center'
                     >
                       <Box fontSize='sm'>{<ReactionButtons post={post} />}</Box>
-                      <CustomButtonLink
-                        to={`/detail/${post.id}`}
-                        fontSize='12px'
-                        color='#fff'
-                        backgroundColor='blue.500'
-                        _hover={{ backgroundColor: 'blue.400' }}
-                      >
-                        View Post
-                      </CustomButtonLink>
+                      
                       <CustomButtonLink
                         to={`/update/${post.id}`}
                         color='#fff'
-                        fontSize='11px'
-                        backgroundColor='blue.400'
-                        _hover={{ backgroundColor: 'blue.300' }}
+                        fontSize='12px'
+                        backgroundColor='blue.500'
+                        _hover={{ backgroundColor: 'blue.400' }}
+                        textAlign='center'
+                        py={2}
+                        borderRadius='5px'
                       >
                         Update Post
                       </CustomButtonLink>
@@ -173,7 +182,12 @@ const PostsList = () => {
                     />
                     <Stack mt='6' spacing='3'>
                       <CardHeader size='md'>{post.title}</CardHeader>
-                      <Text>{postExcerpt(post.content, 80)}</Text>
+                      <Text>{postExcerpt(post.content, 80)}</Text>&nbsp;
+                      <Link
+                        to={`/detail/${post.id}`}
+                      >
+                        View More
+                      </Link>
                       <Text fontSize='14px' color='#333'>
                         Author: {post.author}
                       </Text>
@@ -190,21 +204,15 @@ const PostsList = () => {
                       align='center'
                     >
                       <Box fontSize='sm'>{<ReactionButtons post={post} />}</Box>
-                      <CustomButtonLink
-                        to={`/detail/${post.id}`}
-                        fontSize='12px'
-                        color='#333'
-                        backgroundColor='Blue.500'
-                        _hover={{ backgroundColor: 'blue.400' }}
-                      >
-                        View Post
-                      </CustomButtonLink>
+                      
                       <CustomButtonLink
                         to={`/update/${post.id}`}
                         color='#333'
-                        fontSize='11px'
+                        fontSize='12px'
                         backgroundColor='blue.500'
-                        _hover={{ backgroundColor: 'blue.300' }}
+                        _hover={{ backgroundColor: 'blue.400' }}
+                        py={2}
+                        borderRadius='5px'  
                       >
                         Update Post
                       </CustomButtonLink>

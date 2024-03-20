@@ -5,7 +5,6 @@ import AddEditPosts from './pages/AddEditPosts';
 import Navbar from './component/Navbar';
 import PostsList from './pages/PostsList';
 import PostDetail from './pages/PostDetail';
-import './index.css';
 import { Box } from '@chakra-ui/react';
 
 export default function App() {
