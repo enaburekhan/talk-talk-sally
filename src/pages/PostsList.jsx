@@ -129,7 +129,12 @@ const PostsList = () => {
                     <Stack mt='6' spacing='3'>
                       <CardHeader size='md'>{post.title}</CardHeader>
                       <Text>
-                        {postExcerpt(post.content, 80)} &nbsp;
+                        <div
+                          dangerouslySetInnerHTML={{
+                            __html: postExcerpt(post.content, 80),
+                          }}
+                        />
+                        &nbsp;
                         <Link
                           href={`/detail/${post.id}`}
                           fontSize='12px'

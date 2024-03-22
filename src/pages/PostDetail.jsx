@@ -32,16 +32,8 @@ const PostDetail = () => {
         </Box>
       </Flex>
       <Heading mb='5px'>{post?.title}</Heading>
-      <Editor
-        apiKey='qzdns6jmf0qi7om95ppnxngk06o19tuuzdx3zdde6ub7v7cb'
-        initialValue={post?.content}
-        init={{
-          plugins:
-            'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage advtemplate mentions tableofcontents footnotes mergetags autocorrect typography inlinecss',
-          toolbar:
-            'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
-        }}
-      />
+
+      <div dangerouslySetInnerHTML={{ __html: post?.content }} />
 
       <Text color='blue.600' fontSize='12px' fontWeight='800'>
         Created on: {post?.timestamp.toDate().toLocaleString()}

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { storage } from '../utils/firebase';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import { toast } from 'react-toastify';
@@ -17,8 +17,8 @@ import {
   FormLabel,
   Heading,
   Input,
-  Textarea,
 } from '@chakra-ui/react';
+import { Editor } from '@tinymce/tinymce-react';
 
 const initialState = {
   title: '',
@@ -35,6 +35,7 @@ const AddEditPosts = () => {
   const { data: post } = useFetchPostQuery(id ? id : skipToken);
   const [updatePost] = useUpdatePostMutation();
   const navigate = useNavigate();
+  const editorRef = useRef(null);
 
   const { title, content, author } = data;
 
@@ -91,42 +92,67 @@ const AddEditPosts = () => {
     setData({ ...data, [e.target.name]: e.target.value });
   };
 
+  const handleEditorChange = (content) => {
+    setData((prevData) => ({ ...prevData, content }));
+  };
+
   function validateForm() {
     if (!title.trim() || !content.trim() || !author.trim()) {
       toast.error('Please fill in all fields');
       return false;
     } else if (!/^[a-zA-Z\s!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~]+$/.test(title)) {
-      toast.error('Only letters, spaces, and special characters are allowed in title');
+      toast.error(
+        'Only letters, spaces, and special characters are allowed in title'
+      );
       return false;
     } else if (!/^[a-zA-Z]+$/.test(author)) {
       toast.error('Only letters are allowed in author');
       return false;
     }
-  
+
     return true;
   }
-  
+
+  const clearForm = () => {
+    setData(initialState);
+    setFile(null);
+  };
+
+  const addNewPost = async () => {
+    try {
+      const result = await addPosts(data);
+
+      if (result.error) {
+        console.error('Error adding post:', result.error);
+        return;
+      }
+
+      clearForm();
+      toast.success('Post Added Successfully');
+      navigate('/');
+    } catch (error) {
+      console.error('Error Adding post:', error);
+    }
+  };
+
+  const updateExistingPost = async () => {
+    try {
+      await updatePost({ id, data });
+      toast.success('Post Updated Successfully');
+      navigate('/');
+    } catch (error) {
+      console.error('Error Updating Post:', error);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (validateForm()) {
-      if (!id) {
-        const result = await addPosts(data);
+    if (!validateForm()) return;
 
-        if (result && result.error) {
-          // Handle error appropriately (e.g. show a toast, display an error message)
-          console.error('Error add post:', result.error);
-        }
-        // Clear the form or perform any other necessary actions upon successful submission
-        setData(initialState);
-        setFile(null);
-        toast.success('Post Added Successfully');
-        navigate('/');
-      } else {
-        await updatePost({ id, data });
-        toast.success('Post Updated Successfully');
-        navigate('/');
-      }
+    if (!id) {
+      await addNewPost();
+    } else {
+      await updateExistingPost();
     }
   };
 
@@ -146,12 +172,23 @@ const AddEditPosts = () => {
         </FormControl>
         <FormControl mb='4'>
           <FormLabel htmlFor='postContent'>Content:</FormLabel>
-          <Textarea
-            type='text'
-            id='content'
-            name='content'
+          <Editor
+            apiKey='qzdns6jmf0qi7om95ppnxngk06o19tuuzdx3zdde6ub7v7cb'
             value={content}
-            onChange={handleChange}
+            init={{
+              height: 500,
+              menubar: false,
+              plugins:
+                'advlist autolink lists link image charmap preview anchor searchreplace visualblocks code fullscreen insertdatetime media table code help wordcount',
+              toolbar:
+                'undo redo | formatselect | bold italic backcolor | \
+                alignleft aligncenter alignright alignjustify | \
+                bullist numlist outdent indent | removeformat | help',
+              content_style:
+                'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
+            }}
+            onInit={(evt, editor) => (editorRef.current = editor)}
+            onEditorChange={handleEditorChange}
           />
         </FormControl>
         <FormControl mb='4'>
