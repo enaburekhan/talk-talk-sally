@@ -1,9 +1,7 @@
 import { Field } from 'formik';
 import { Editor } from '@tinymce/tinymce-react';
 
-const TinyMCEForm = (props) => {
-  const { name, ...rest } = props;
-
+const TinyMCEForm = ({ name, ...rest }) => {
   return (
     <>
       <Field id={name} name={name} {...rest}>

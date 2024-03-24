@@ -1,8 +1,6 @@
 import TinyMCEForm from '';
 
-const FormikControl = (props) => {
-  const { control, ...rest } = props;
-
+const FormikControl = ({ control, ...rest }) => {
   switch (control) {
     case 'tiny-mce':
       return <TinyMCEForm {...rest} />;
