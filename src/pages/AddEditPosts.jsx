@@ -11,6 +11,7 @@ import {
 import { useNavigate, useParams } from 'react-router-dom';
 import { skipToken } from '@reduxjs/toolkit/query';
 import {
+  Alert,
   Box,
   Button,
   FormControl,
@@ -19,15 +20,11 @@ import {
   Input,
 } from '@chakra-ui/react';
 import { Editor } from '@tinymce/tinymce-react';
-
-const initialState = {
-  title: '',
-  content: '',
-  author: '',
-};
+import { Formik, Form, Field } from 'formik';
+import * as Yup from 'yup';
+import TinyMCEForm from '../component/TinyMceForm';
 
 const AddEditPosts = () => {
-  const [data, setData] = useState(initialState);
   const [file, setFile] = useState(null);
   const [progress, setProgress] = useState(null);
   const [addPosts] = useAddPostsMutation();
@@ -36,17 +33,67 @@ const AddEditPosts = () => {
   const [updatePost] = useUpdatePostMutation();
   const navigate = useNavigate();
   const editorRef = useRef(null);
-
-  const { title, content, author } = data;
+  const [formValues, setFormValues] = useState({
+    title: '',
+    content: '',
+    author: '',
+    file: null,
+  });
 
   useEffect(() => {
     if (id && post) {
-      setData({ ...post });
+      console.log('post', post);
+      // Update form values when the component mount
+      setFormValues({
+        title: post.title || '',
+        content: post.content || '',
+        author: post.author || '',
+        file: null,
+      });
     }
   }, [id, post]);
 
-  useEffect(() => {
-    const uploadFile = () => {
+  const SignupSchema = Yup.object().shape({
+    title: Yup.string()
+      .min(2, 'Too Short!')
+      .max(50, 'Too Long!')
+      .required('Required'),
+    content: Yup.string().required('Required'),
+    author: Yup.string()
+      .min(2, 'Too Short!')
+      .max(20, 'Too Long!')
+      .required('Required'),
+    // file: Yup.mixed().required('Required'),
+  });
+
+  const addNewPost = async (values) => {
+    try {
+      const result = await addPosts(values);
+
+      if (result.error) {
+        console.error('Error adding post:', result.error);
+        return;
+      }
+      toast.success('Post Added Successfully');
+      navigate('/');
+    } catch (error) {
+      console.error('Error Adding post:', error);
+    }
+  };
+
+  const updateExistingPost = async (values) => {
+    try {
+      await updatePost({ id, data: values });
+      toast.success('Post Updated Successfully');
+      navigate('/');
+    } catch (error) {
+      console.error('Error Updating Post:', error);
+    }
+  };
+
+  const handleSubmit = async (values) => {
+    if (file) {
+      // File upload logic
       const storageRef = ref(storage, file.name);
       const uploadTask = uploadBytesResumable(storageRef, file);
 
@@ -75,144 +122,59 @@ const AddEditPosts = () => {
           getDownloadURL(uploadTask.snapshot.ref)
             .then((downloadURL) => {
               toast.info('Image uploaded successfully');
-              setData((prev) => ({ ...prev, imgURL: downloadURL }));
+              values.imgURL = downloadURL;
+              if (!id) {
+                addNewPost(values);
+              } else {
+                updateExistingPost(values);
+              }
             })
             .catch((error) => {
-              // Handle error gracefully
               console.error('Error getting download URL: ', error);
               toast.error('Error Uploading image');
             });
         }
       );
-    };
-    file && uploadFile();
-  }, [file]);
-
-  const handleChange = (e) => {
-    setData({ ...data, [e.target.name]: e.target.value });
-  };
-
-  const handleEditorChange = (content) => {
-    setData((prevData) => ({ ...prevData, content }));
-  };
-
-  function validateForm() {
-    if (!title.trim() || !content.trim() || !author.trim()) {
-      toast.error('Please fill in all fields');
-      return false;
-    } else if (!/^[a-zA-Z\s!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~]+$/.test(title)) {
-      toast.error(
-        'Only letters, spaces, and special characters are allowed in title'
-      );
-      return false;
-    } else if (!/^[a-zA-Z]+$/.test(author)) {
-      toast.error('Only letters are allowed in author');
-      return false;
-    }
-
-    return true;
-  }
-
-  const clearForm = () => {
-    setData(initialState);
-    setFile(null);
-  };
-
-  const addNewPost = async () => {
-    try {
-      const result = await addPosts(data);
-
-      if (result.error) {
-        console.error('Error adding post:', result.error);
-        return;
-      }
-
-      clearForm();
-      toast.success('Post Added Successfully');
-      navigate('/');
-    } catch (error) {
-      console.error('Error Adding post:', error);
-    }
-  };
-
-  const updateExistingPost = async () => {
-    try {
-      await updatePost({ id, data });
-      toast.success('Post Updated Successfully');
-      navigate('/');
-    } catch (error) {
-      console.error('Error Updating Post:', error);
-    }
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!validateForm()) return;
-
-    if (!id) {
-      await addNewPost();
     } else {
-      await updateExistingPost();
+      if (!id) {
+        addNewPost(values);
+      } else {
+        updateExistingPost(values);
+      }
     }
   };
 
   return (
     <Box maxW='600px' mx='auto' mt='6'>
       <Heading>{id ? 'Update a Post' : 'Add a New Post'}</Heading>
-      <form onSubmit={handleSubmit}>
-        <FormControl mb='4'>
-          <FormLabel htmlFor='postTitle'>Title:</FormLabel>
-          <Input
-            type='string'
-            id='title'
-            name='title'
-            value={title}
-            onChange={handleChange}
-          />
-        </FormControl>
-        <FormControl mb='4'>
-          <FormLabel htmlFor='postContent'>Content:</FormLabel>
-          <Editor
-            apiKey='qzdns6jmf0qi7om95ppnxngk06o19tuuzdx3zdde6ub7v7cb'
-            value={content}
-            init={{
-              height: 500,
-              menubar: false,
-              plugins:
-                'advlist autolink lists link image charmap preview anchor searchreplace visualblocks code fullscreen insertdatetime media table code help wordcount',
-              toolbar:
-                'undo redo | formatselect | bold italic backcolor | \
-                alignleft aligncenter alignright alignjustify | \
-                bullist numlist outdent indent | removeformat | help',
-              content_style:
-                'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
-            }}
-            onInit={(evt, editor) => (editorRef.current = editor)}
-            onEditorChange={handleEditorChange}
-          />
-        </FormControl>
-        <FormControl mb='4'>
-          <FormLabel htmlFor='postAuthor'>Author:</FormLabel>
-          <Input
-            type='string'
-            id='author'
-            name='author'
-            value={author}
-            onChange={handleChange}
-          />
-        </FormControl>
-        <FormControl mb='4'>
-          <FormLabel htmlFor='file'>Upload Image:</FormLabel>
-          <Input type='file' onChange={(e) => setFile(e.target.files[0])} />
-        </FormControl>
-        <Button
-          type='submit'
-          colorScheme='teal'
-          disabled={progress !== null && progress < 100}
+      <div>
+        <Formik
+          initialValues={formValues}
+          validationSchema={SignupSchema}
+          onSubmit={handleSubmit}
+          enableReinitialize={true}
         >
-          {id ? 'Update Post' : 'Add Post'}
-        </Button>
-      </form>
+          {({ errors, touched, setFieldValue }) => (
+            <Form>
+              <Field name='title' placeholder='Title' />
+              {errors.title && touched.title ? (
+                <Alert status='error'>{errors.title}</Alert>
+              ) : null}
+              <TinyMCEForm name='content' />
+
+              {errors.content && touched.content ? (
+                <Alert status='error'>{errors.content}</Alert>
+              ) : null}
+              <input type='file' onChange={(e) => setFile(e.target.files[0])} />
+              <Field name='author' type='string' placeholder='Author' />
+              {errors.author && touched.author ? (
+                <Alert status='error'>{errors.author}</Alert>
+              ) : null}
+              <button type='submit'>Submit</button>
+            </Form>
+          )}
+        </Formik>
+      </div>
     </Box>
   );
 };

@@ -128,21 +128,22 @@ const PostsList = () => {
                     />
                     <Stack mt='6' spacing='3'>
                       <CardHeader size='md'>{post.title}</CardHeader>
-                      <Text>
-                        <div
+                      <Flex align='center'>
+                        <Box
                           dangerouslySetInnerHTML={{
                             __html: postExcerpt(post.content, 80),
                           }}
                         />
-                        &nbsp;
+
                         <Link
                           href={`/detail/${post.id}`}
                           fontSize='12px'
                           color='blue'
+                          ml='2'
                         >
                           View More
                         </Link>
-                      </Text>
+                      </Flex>
 
                       <Text fontSize='14px' color='#333'>
                         Author: {post.author}
