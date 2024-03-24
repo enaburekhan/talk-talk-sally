@@ -4,7 +4,6 @@ import { skipToken } from '@reduxjs/toolkit/query';
 import { useEffect } from 'react';
 import { Flex, Text, Box, Heading, Avatar } from '@chakra-ui/react';
 import { toast } from 'react-toastify';
-import { Editor } from '@tinymce/tinymce-react';
 
 const PostDetail = () => {
   const { id } = useParams();

@@ -3,6 +3,7 @@ import { useDeletePostMutation, useFetchPostsQuery } from '../utils/postsApi';
 import { toast } from 'react-toastify';
 import ReactionButtons from '../component/ReactionButtons';
 import { useState } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 import {
   Box,
   Flex,
@@ -136,7 +137,8 @@ const PostsList = () => {
                         />
 
                         <Link
-                          href={`/detail/${post.id}`}
+                          as={RouterLink}
+                          to={`/detail/${post.id}`}
                           fontSize='12px'
                           color='blue'
                           ml='2'
@@ -205,7 +207,9 @@ const PostsList = () => {
                     <Stack mt='6' spacing='3'>
                       <CardHeader size='md'>{post.title}</CardHeader>
                       <Text>{postExcerpt(post.content, 80)}</Text>&nbsp;
-                      <Link to={`/detail/${post.id}`}>View More</Link>
+                      <Link as={RouterLink} to={`/detail/${post.id}`}>
+                        View More
+                      </Link>
                       <Text fontSize='14px' color='#333'>
                         Author: {post.author}
                       </Text>

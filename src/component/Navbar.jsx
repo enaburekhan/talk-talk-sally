@@ -1,9 +1,9 @@
 import React from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 import {
   Flex,
   Box,
   Text,
-  Link,
   HStack,
   VStack,
   IconButton,
@@ -14,6 +14,7 @@ import {
   DrawerHeader,
   DrawerBody,
   DrawerCloseButton,
+  Link,
 } from '@chakra-ui/react';
 import { HamburgerIcon } from '@chakra-ui/icons';
 
@@ -44,10 +45,10 @@ const Navbar = () => {
         spacing={{ base: 2, md: 4 }}
         display={{ base: 'none', md: 'flex' }}
       >
-        <Link href='/' color='white'>
+        <Link as={RouterLink} to='/' color='white'>
           Posts
         </Link>
-        <Link href='/addPost' color='white'>
+        <Link as={RouterLink} to='/addPost' color='white'>
           AddPost
         </Link>
       </HStack>
@@ -60,10 +61,15 @@ const Navbar = () => {
             <DrawerHeader>Menu</DrawerHeader>
             <DrawerBody>
               <VStack spacing={2} align='start'>
-                <Link href='/' color='black' onClick={onClose}>
+                <Link as={RouterLink} to='/' color='black' onClick={onClose}>
                   Posts
                 </Link>
-                <Link href='/addPost' color='black' onClick={onClose}>
+                <Link
+                  as={RouterLink}
+                  to='/addPost'
+                  color='black'
+                  onClick={onClose}
+                >
                   AddPost
                 </Link>
               </VStack>
