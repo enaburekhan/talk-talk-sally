@@ -19,7 +19,6 @@ import {
   Heading,
   Input,
 } from '@chakra-ui/react';
-import { Editor } from '@tinymce/tinymce-react';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import TinyMCEForm from '../component/TinyMceForm';
@@ -32,7 +31,6 @@ const AddEditPosts = () => {
   const { data: post } = useFetchPostQuery(id ? id : skipToken);
   const [updatePost] = useUpdatePostMutation();
   const navigate = useNavigate();
-  const editorRef = useRef(null);
   const [formValues, setFormValues] = useState({
     title: '',
     content: '',
@@ -42,7 +40,6 @@ const AddEditPosts = () => {
 
   useEffect(() => {
     if (id && post) {
-      console.log('post', post);
       // Update form values when the component mount
       setFormValues({
         title: post.title || '',
@@ -55,15 +52,14 @@ const AddEditPosts = () => {
 
   const SignupSchema = Yup.object().shape({
     title: Yup.string()
-      .min(2, 'Too Short!')
+      .min(3, 'Too Short!')
       .max(50, 'Too Long!')
       .required('Required'),
     content: Yup.string().required('Required'),
     author: Yup.string()
-      .min(2, 'Too Short!')
-      .max(20, 'Too Long!')
+      .min(3, 'Too Short!')
+      .max(50, 'Too Long!')
       .required('Required'),
-    // file: Yup.mixed().required('Required'),
   });
 
   const addNewPost = async (values) => {
@@ -154,7 +150,7 @@ const AddEditPosts = () => {
           onSubmit={handleSubmit}
           enableReinitialize={true}
         >
-          {({ errors, touched, setFieldValue }) => (
+          {({ errors, touched }) => (
             <Form>
               <Field name='title' placeholder='Title' />
               {errors.title && touched.title ? (
