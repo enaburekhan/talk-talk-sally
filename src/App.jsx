@@ -6,26 +6,25 @@ import Navbar from './component/Navbar';
 import PostsList from './pages/PostsList';
 import PostDetail from './pages/PostDetail';
 import { Box } from '@chakra-ui/react';
+import Home from './pages/Home';
 
 export default function App() {
   return (
     <Box>
-    <Router>
-      <div>
-        <Navbar />
-        <ToastContainer position='top-center' />
-        <Routes>
-          <Route path='/' element={<PostsList />} />
-          <Route path='/addPost' element={<AddEditPosts />} />
-          <Route path='/update/:id' element={<AddEditPosts />} />
+      <Router>
+        <div>
+          <Navbar />
+          <ToastContainer position='top-center' />
+          <Routes>
+            <Route path='/' element={<Home />} />
+            <Route path='/posts' element={<PostsList />} />
+            <Route path='/addPost' element={<AddEditPosts />} />
+            <Route path='/update/:id' element={<AddEditPosts />} />
 
-          <Route path='/detail/:id' element={<PostDetail />} />
-        </Routes>
-      </div>
+            <Route path='/detail/:id' element={<PostDetail />} />
+          </Routes>
+        </div>
       </Router>
-      
-    
     </Box>
-  
   );
 }

@@ -12,6 +12,11 @@ import {
   updateDoc,
 } from 'firebase/firestore';
 import { db } from './firebase';
+import {
+  createUserWithEmailAndPassword,
+  getAuth,
+  signInWithEmailAndPassword,
+} from 'firebase/auth';
 
 // Define a service using a base URL and expected endpoints
 export const postsApi = createApi({
@@ -145,6 +150,41 @@ export const postsApi = createApi({
         }
       },
     }),
+    // Add a mutation for user signup
+    userSignup: builder.mutation({
+      async queryFn({ email, password }) {
+        try {
+          const auth = getAuth();
+          const userCredential = await createUserWithEmailAndPassword(
+            auth,
+            email,
+            password
+          );
+          const user = userCredential.user;
+          return { data: user };
+        } catch (err) {
+          return { error: err };
+        }
+      },
+    }),
+
+    // Add a mutation for user signin
+    userSignin: builder.mutation({
+      async queryFn({ email, password }) {
+        try {
+          const auth = getAuth();
+          const userCredential = await signInWithEmailAndPassword(
+            auth,
+            email,
+            password
+          );
+          const user = userCredential.user;
+          return { data: user };
+        } catch (err) {
+          return { error: err };
+        }
+      },
+    }),
   }),
 });
 
@@ -155,4 +195,6 @@ export const {
   useFetchPostQuery,
   useUpdatePostMutation,
   useAddReactionMutation,
+  useUserSignupMutation,
+  useUserSigninMutation,
 } = postsApi;

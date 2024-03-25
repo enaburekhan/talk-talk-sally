@@ -24,9 +24,15 @@ const Navbar = () => {
   return (
     <Flex p={4} bg='blue.500' align='center' justify='space-between'>
       <Box>
-        <Text fontSize='xl' fontWeight='bold' color='white'>
+        <Link
+          as={RouterLink}
+          to='/'
+          fontSize='xl'
+          fontWeight='bold'
+          color='white'
+        >
           TalkTalkSally
-        </Text>
+        </Link>
       </Box>
 
       {/* Display Hamburger Menu on Small Screens */}
@@ -45,7 +51,7 @@ const Navbar = () => {
         spacing={{ base: 2, md: 4 }}
         display={{ base: 'none', md: 'flex' }}
       >
-        <Link as={RouterLink} to='/' color='white'>
+        <Link as={RouterLink} to='/posts' color='white'>
           Posts
         </Link>
         <Link as={RouterLink} to='/addPost' color='white'>
@@ -61,7 +67,12 @@ const Navbar = () => {
             <DrawerHeader>Menu</DrawerHeader>
             <DrawerBody>
               <VStack spacing={2} align='start'>
-                <Link as={RouterLink} to='/' color='black' onClick={onClose}>
+                <Link
+                  as={RouterLink}
+                  to='/posts'
+                  color='black'
+                  onClick={onClose}
+                >
                   Posts
                 </Link>
                 <Link

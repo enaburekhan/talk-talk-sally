@@ -71,7 +71,7 @@ const AddEditPosts = () => {
         return;
       }
       toast.success('Post Added Successfully');
-      navigate('/');
+      navigate('/posts');
     } catch (error) {
       console.error('Error Adding post:', error);
     }
@@ -81,7 +81,7 @@ const AddEditPosts = () => {
     try {
       await updatePost({ id, data: values });
       toast.success('Post Updated Successfully');
-      navigate('/');
+      navigate('/posts');
     } catch (error) {
       console.error('Error Updating Post:', error);
     }
