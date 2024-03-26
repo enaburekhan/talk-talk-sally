@@ -23,7 +23,7 @@ import {
 export const postsApi = createApi({
   reducerPath: 'postsApi',
   baseQuery: fakeBaseQuery(),
-  tagTypes: ['Post'],
+  tagTypes: ['Post', 'Comment'],
   endpoints: (builder) => ({
     fetchPosts: builder.query({
       queryFn: async () => {
@@ -33,7 +33,6 @@ export const postsApi = createApi({
           let posts = [];
           // Extract data from querySnapshot
           querySnapshot?.forEach((doc) => {
-            // convert Firestore timestamp to Javascript Date object
             const data = doc.data();
             posts.push({
               id: doc.id,
@@ -200,6 +199,41 @@ export const postsApi = createApi({
         }
       },
     }),
+    addComment: builder.mutation({
+      queryFn: async ({ postId, username, comment }) => {
+        try {
+          const commentRef = await addDoc(
+            collection(db`posts/${postId}/comments`),
+            {
+              username,
+              comment,
+              timestamp: serverTimestamp(),
+            }
+          );
+          return { data: { id: commentRef.id, username, comment } };
+        } catch (error) {
+          return { error };
+        }
+      },
+      invalidatesTags: ['Comment'],
+    }),
+    fetchComments: builder.query({
+      queryFn: async (postId) => {
+        try {
+          const commentsSnapshot = await getDocs(
+            collection(db, `posts/${postId}/comments`)
+          );
+          const commentsData = commentsSnapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }));
+          return { data: commentsData };
+        } catch (error) {
+          return { error };
+        }
+      },
+      providesTags: (result, error, postId) => [{ type: 'Comment', postId }],
+    }),
   }),
 });
 
@@ -213,4 +247,6 @@ export const {
   useUserSignupMutation,
   useUserSigninMutation,
   useUserSignoutMutation,
+  useAddCommentMutation,
+  useFetchCommentsQuery,
 } = postsApi;
