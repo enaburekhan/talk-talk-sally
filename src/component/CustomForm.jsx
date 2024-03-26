@@ -1,37 +1,36 @@
 import { Box, Heading, Stack, Alert } from '@chakra-ui/react';
 import { useState } from 'react';
 import { Mention, MentionsInput } from 'react-mentions';
-import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
-import { db } from '../utils/firebase';
+import { useUser } from './UserContext';
+import { useAddCommentMutation } from '../utils/postsApi';
 
 const CustomForm = ({ post }) => {
+  console.log('post.content', post?.content);
   const [formState, setFormState] = useState({
-    username: '',
+    email: '',
     comment: '',
   });
 
-  const [comments, setComments] = useState([]);
+  const { user } = useUser();
+  const [addComment] = useAddCommentMutation();
 
   const submit = async () => {
-    if (formState.username === '' || formState.comment === '') {
-      alert('Please fill in all fields');
+    if (!user) {
+      alert('Please sign in to comment');
+      return;
+    }
+    if (formState.comment === '') {
+      alert('Please fill in the comment fields');
       return;
     }
     try {
-      const newCommentRef = await addDoc(
-        collection(db, `posts/${post.id}/comments`),
-        {
-          username: formState.username,
-          comment: formState.comment,
-          timestamp: serverTimestamp(),
-        }
-      );
+      await addComment({
+        postId: post.id,
+        email: user.email,
+        comment: formState.comment,
+      });
 
-      setComments((prevComments) => [
-        ...prevComments,
-        { id: newCommentRef.id, ...formState },
-      ]);
-      setFormState({ username: '', comment: '' });
+      setFormState({ ...formState, comment: '' });
     } catch (error) {
       console.error('Error adding comment:', error);
     }
@@ -41,14 +40,6 @@ const CustomForm = ({ post }) => {
     <Box>
       <Stack>
         <Heading>Comment Form</Heading>
-        <input
-          type='text'
-          value={formState.value}
-          onChange={(e) =>
-            setFormState({ ...formState, username: e.target.value })
-          }
-          placeholder='Input your name'
-        />
         <MentionsInput
           placeholder="Add a comment. Use '@' for mention"
           value={formState.comment}
@@ -56,28 +47,16 @@ const CustomForm = ({ post }) => {
             setFormState({ ...formState, comment: e.target.value })
           }
         >
-          <Mention data={post} />
+          <Mention
+            trigger='@'
+            data={post?.content}
+            renderSuggestion={(suggestion, search, highlightedDisplay) => (
+              <div className='user'>{highlightedDisplay}</div>
+            )}
+          />
         </MentionsInput>
         <button onClick={submit}>Submit</button>
       </Stack>
-      {comments.length === 0 ? null : (
-        <Stack>
-          {comments.map((comment, index) => {
-            const current = new Date();
-            const date = `${current.getDate()}/${
-              current.getMonth() + 1
-            }/${current.getFullYear()}`;
-            return (
-              <Box key={index}>
-                <p>
-                  {comment.username} on {date}
-                </p>
-                <Heading>{comment.comment}</Heading>
-              </Box>
-            );
-          })}
-        </Stack>
-      )}
     </Box>
   );
 };

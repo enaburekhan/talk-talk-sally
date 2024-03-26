@@ -200,17 +200,17 @@ export const postsApi = createApi({
       },
     }),
     addComment: builder.mutation({
-      queryFn: async ({ postId, username, comment }) => {
+      queryFn: async ({ postId, email, comment }) => {
         try {
           const commentRef = await addDoc(
             collection(db`posts/${postId}/comments`),
             {
-              username,
+              email,
               comment,
               timestamp: serverTimestamp(),
             }
           );
-          return { data: { id: commentRef.id, username, comment } };
+          return { data: { id: commentRef.id, email, comment } };
         } catch (error) {
           return { error };
         }
