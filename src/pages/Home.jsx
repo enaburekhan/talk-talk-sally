@@ -9,12 +9,14 @@ import {
 } from '../utils/postsApi';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import { useUser } from '../component/UserContext';
 
 const Home = () => {
   const [isSignup, setIsSignup] = useState(true);
   const [userSignupMutation] = useUserSignupMutation();
   const [userSigninMutation] = useUserSigninMutation();
   const navigate = useNavigate();
+  const { setUser } = useUser();
 
   const userSchema = Yup.object().shape({
     email: Yup.string().email('Invalid email').required('Required'),
@@ -22,9 +24,36 @@ const Home = () => {
       .required('No password provided.')
       .min(8, 'Password is too short - should be 8 chars minimum.'),
   });
+
+  const handleFormSubmit = async (values, setSubmitting) => {
+    try {
+      let response;
+      if (isSignup) {
+        response = await userSignupMutation(values);
+      } else {
+        response = await userSigninMutation(values);
+      }
+      if (response.error) {
+        console.error('Error', response.error);
+        toast.error(response.error.message);
+      } else {
+        const { data } = response;
+        setUser(data);
+        localStorage.setItem('user', JSON.stringify(data));
+        toast.success(
+          isSignup ? 'Signed Up Successfully' : 'Signed In Successfully'
+        );
+        navigate('/addpost');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    } finally {
+      setSubmitting(false);
+    }
+  };
   return (
     <div>
-      <h2>Signup or Login to Create Posts</h2>
+      <h2>Signup or Signin to Create Posts</h2>
       <Formik
         initialValues={{
           email: '',
@@ -32,31 +61,7 @@ const Home = () => {
         }}
         validationSchema={userSchema}
         onSubmit={async (values, { setSubmitting }) => {
-          try {
-            if (isSignup) {
-              const result = await userSignupMutation(values);
-              if (result.error) {
-                console.error('Error Signing Up:', result.error);
-                toast.error(result.error.message);
-              } else {
-                toast.success('Signed Up Successfully');
-                navigate('/addpost');
-              }
-            } else {
-              const result = await userSigninMutation(values);
-              if (result.error) {
-                console.error('Error Signing In:', result.error);
-                toast.error(result.error.message);
-              } else {
-                toast.success('Signed In Successfully');
-                navigate('/addpost');
-              }
-            }
-          } catch (error) {
-            console.error('Error:', error);
-          } finally {
-            setSubmitting(false);
-          }
+          handleFormSubmit(values, setSubmitting);
         }}
       >
         {({ errors, touched, isSubmitting }) => (

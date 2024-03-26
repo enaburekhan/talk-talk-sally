@@ -7,12 +7,13 @@ import PostsList from './pages/PostsList';
 import PostDetail from './pages/PostDetail';
 import { Box } from '@chakra-ui/react';
 import Home from './pages/Home';
+import { UserProvider } from './component/UserContext';
 
 export default function App() {
   return (
     <Box>
       <Router>
-        <div>
+        <UserProvider>
           <Navbar />
           <ToastContainer position='top-center' />
           <Routes>
@@ -23,7 +24,7 @@ export default function App() {
 
             <Route path='/detail/:id' element={<PostDetail />} />
           </Routes>
-        </div>
+        </UserProvider>
       </Router>
     </Box>
   );

@@ -1,5 +1,5 @@
-import React from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import {
   Flex,
   Box,
@@ -17,9 +17,31 @@ import {
   Link,
 } from '@chakra-ui/react';
 import { HamburgerIcon } from '@chakra-ui/icons';
+import { useUserSignoutMutation } from '../utils/postsApi';
+import { useUser } from './UserContext';
 
 const Navbar = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [userSignout] = useUserSignoutMutation();
+  const navigate = useNavigate();
+  const { user, setUser } = useUser();
+
+  useEffect(() => {
+    if (user) {
+      localStorage.setItem('user', JSON.stringify(user));
+    }
+  }, [user]);
+
+  const handleSignout = async () => {
+    try {
+      localStorage.removeItem('user');
+      await userSignout();
+      setUser(null); // Clear user state
+      navigate('/');
+    } catch (error) {
+      console.error('Error signing out:', error);
+    }
+  };
 
   return (
     <Flex p={4} bg='blue.500' align='center' justify='space-between'>
@@ -54,9 +76,17 @@ const Navbar = () => {
         <Link as={RouterLink} to='/posts' color='white'>
           Posts
         </Link>
-        <Link as={RouterLink} to='/addPost' color='white'>
-          AddPost
-        </Link>
+
+        {user && (
+          <>
+            <Link as={RouterLink} to='/addPost' color='white'>
+              AddPost
+            </Link>
+            <Link as={RouterLink} to='/' color='white' onClick={handleSignout}>
+              SignOut
+            </Link>
+          </>
+        )}
       </HStack>
 
       {/* Drawer for Mobile Navigation */}
@@ -75,14 +105,30 @@ const Navbar = () => {
                 >
                   Posts
                 </Link>
-                <Link
-                  as={RouterLink}
-                  to='/addPost'
-                  color='black'
-                  onClick={onClose}
-                >
-                  AddPost
-                </Link>
+                {user && (
+                  <>
+                    <Link
+                      as={RouterLink}
+                      to='/addPost'
+                      color='black'
+                      onClick={onClose}
+                    >
+                      AddPost
+                    </Link>
+
+                    <Link
+                      as={RouterLink}
+                      to='/'
+                      color='black'
+                      onClick={() => {
+                        handleSignout();
+                        onClose();
+                      }}
+                    >
+                      SignOut
+                    </Link>
+                  </>
+                )}
               </VStack>
             </DrawerBody>
           </DrawerContent>

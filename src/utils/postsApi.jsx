@@ -16,6 +16,7 @@ import {
   createUserWithEmailAndPassword,
   getAuth,
   signInWithEmailAndPassword,
+  signOut,
 } from 'firebase/auth';
 
 // Define a service using a base URL and expected endpoints
@@ -161,6 +162,7 @@ export const postsApi = createApi({
             password
           );
           const user = userCredential.user;
+          console.log('user-signup', user);
           return { data: user };
         } catch (err) {
           return { error: err };
@@ -179,9 +181,22 @@ export const postsApi = createApi({
             password
           );
           const user = userCredential.user;
+          console.log('user-signin', user);
           return { data: user };
         } catch (err) {
           return { error: err };
+        }
+      },
+    }),
+    userSignout: builder.mutation({
+      async queryFn() {
+        try {
+          const auth = getAuth();
+          await signOut(auth);
+          return { data: 'Signout Successfully' };
+        } catch (error) {
+          console.error('error', error);
+          return { error: error.message };
         }
       },
     }),
@@ -197,4 +212,5 @@ export const {
   useAddReactionMutation,
   useUserSignupMutation,
   useUserSigninMutation,
+  useUserSignoutMutation,
 } = postsApi;
