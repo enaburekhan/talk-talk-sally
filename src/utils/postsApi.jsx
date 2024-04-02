@@ -117,13 +117,13 @@ export const postsApi = createApi({
       invalidatesTags: ['Post'],
     }),
     addReaction: builder.mutation({
-      queryFn: ({ postId, reaction }) => ({
+      queryFn: ({ postId, reaction, userId }) => ({
         url: `posts/${postId}/reactions`,
         method: 'POST',
-        body: { reaction },
+        body: { reaction, userId },
       }),
       onQueryStarted: async (
-        { postId, reaction },
+        { postId, reaction, userId },
         { dispatch, queryFulfilled }
       ) => {
         try {
@@ -141,11 +141,19 @@ export const postsApi = createApi({
           // Get the existing reactions or initialize an empty object
           const existingReactions = postSnapshot.data().reactions || {};
 
+          // Check if the user has already reacted with the selected reaction
+          if (
+            existingReactions[reaction] &&
+            existingReactions[reaction].includes[userId]
+          ) {
+            throw new Error('User already reacted with this reaction');
+          }
+
           // Update the reactions for the existing post
           await updateDoc(postRef, {
             reactions: {
               ...existingReactions,
-              [reaction]: (existingReactions[reaction] || 0) + 1,
+              [reaction]: [...(existingReactions[reaction] || []), userId],
             },
             timestamp: serverTimestamp(),
           });
@@ -154,7 +162,9 @@ export const postsApi = createApi({
             postsApi.util.updateQueryData('fetchPosts', undefined, (draft) => {
               const post = draft.find((post) => post.id === postId);
               if (post) {
-                post.reactions[reaction] = (post.reactions[reaction] || 0) + 1;
+                post.reactions[reaction] = (
+                  post.reactions[reaction] || []
+                ).concat(userId);
               }
             })
           );
