@@ -10,6 +10,13 @@ import {
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../component/UserContext';
+import {
+  Box,
+  FormControl,
+  Heading,
+  useBreakpointValue,
+  Text,
+} from '@chakra-ui/react';
 
 const Home = () => {
   const [isSignup, setIsSignup] = useState(true);
@@ -51,9 +58,13 @@ const Home = () => {
       setSubmitting(false);
     }
   };
+
+  const buttonSize = useBreakpointValue({ base: 'sm', md: 'md' });
   return (
-    <div>
-      <h2>Signup or Signin to Create Posts</h2>
+    <Box p={20}>
+      <Heading as='h6' mb={4}>
+        Signup or Signin to Create Posts
+      </Heading>
       <Formik
         initialValues={{
           email: '',
@@ -66,16 +77,34 @@ const Home = () => {
       >
         {({ errors, touched, isSubmitting }) => (
           <Form>
-            <Field name='email' type='email' placeholder='Email Address' />
-            {errors.email && touched.email ? <div>{errors.email}</div> : null}
-            <Field name='password' placeholder='Password' />
-            {errors.password && touched.password ? (
-              <div>{errors.password}</div>
-            ) : null}
-            <button type='submit' disabled={isSubmitting}>
+            <FormControl mb={4}>
+              <Field name='email' type='email' placeholder='Email Address' />
+              {errors.email && touched.email ? (
+                <Text color='red'>{errors.email}</Text>
+              ) : null}
+            </FormControl>
+            <FormControl mb={4}>
+              <Field name='password' placeholder='Password' />
+              {errors.password && touched.password ? (
+                <Text>{errors.password}</Text>
+              ) : null}
+            </FormControl>
+
+            <button
+              type='submit'
+              colorScheme='blue'
+              size={buttonSize}
+              mb={4}
+              isLoading={isSubmitting}
+            >
               {isSignup ? 'Signup' : 'Signin'}
             </button>
-            <button type='button' onClick={() => setIsSignup(!isSignup)}>
+            <button
+              type='button'
+              colorScheme='blue'
+              size={buttonSize}
+              onClick={() => setIsSignup(!isSignup)}
+            >
               {isSignup
                 ? 'Already have an account? Signin'
                 : "Don't have an account? Signup"}
@@ -83,7 +112,7 @@ const Home = () => {
           </Form>
         )}
       </Formik>
-    </div>
+    </Box>
   );
 };
 
