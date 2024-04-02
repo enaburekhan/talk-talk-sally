@@ -42,8 +42,8 @@ export const postsApi = createApi({
           });
           return { data: posts };
         } catch (err) {
-          console.log('err', err.message);
-          return { error: err.message };
+          console.error('Error fetching posts:', err);
+          return { err };
         }
       },
       providesTags: ['Post'],
@@ -195,7 +195,6 @@ export const postsApi = createApi({
             password
           );
           const user = userCredential.user;
-          console.log('user-signin', user);
           return { data: user };
         } catch (err) {
           return { error: err };
@@ -225,7 +224,6 @@ export const postsApi = createApi({
               timestamp: serverTimestamp(),
             }
           );
-          console.log('commentRef', commentRef);
           return { data: { id: commentRef.id, email, comment } };
         } catch (error) {
           return { error };
@@ -243,13 +241,23 @@ export const postsApi = createApi({
             id: doc.id,
             ...doc.data(),
           }));
-          console.log('commentsData', commentsData);
           return { data: commentsData };
         } catch (error) {
           return { error };
         }
       },
       providesTags: (result, error, postId) => [{ type: 'Comment', postId }],
+    }),
+    deleteComment: builder.mutation({
+      queryFn: async (id) => {
+        try {
+          await deleteDoc(doc(db, `posts/${id}/comments`, commentId));
+          return { data: 'ok' };
+        } catch (err) {
+          return { error: err };
+        }
+      },
+      invalidatesTags: ['Comment'],
     }),
   }),
 });

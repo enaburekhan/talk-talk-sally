@@ -15,16 +15,14 @@ const CommentsForm = ({ post }) => {
 
   const { user } = useUser();
   const [addComment] = useAddCommentMutation();
-  console.log('addComment', addComment);
 
-  const submit = async (e) => {
-    e.preventDefault();
+  const submit = async () => {
     if (!user) {
-      alert('Please sign in to comment');
+      toast.error('Please sign in to comment');
       return;
     }
     if (formState.comment === '') {
-      alert('Please fill in the comment fields');
+      toast.error('Please fill in the comment fields');
       return;
     }
     try {
@@ -45,9 +43,8 @@ const CommentsForm = ({ post }) => {
   return (
     <Box>
       <Stack>
-        <Heading>Comment Form</Heading>
         <MentionsInput
-          placeholder="Add a comment. Use '@' for mention"
+          placeholder='Add a comment here'
           value={formState.comment}
           onChange={(e) =>
             setFormState({ ...formState, comment: e.target.value })

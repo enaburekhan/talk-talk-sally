@@ -2,22 +2,18 @@ import { useParams } from 'react-router-dom';
 import { useFetchCommentsQuery, useFetchPostQuery } from '../utils/postsApi';
 import { skipToken } from '@reduxjs/toolkit/query';
 import { useEffect } from 'react';
-import { Flex, Text, Box, Heading, Avatar } from '@chakra-ui/react';
+import { Flex, Text, Box, Heading, Avatar, Button } from '@chakra-ui/react';
 import { toast } from 'react-toastify';
 import CommentsForm from '../component/CommentsForm';
 
 const PostDetail = () => {
   const { id } = useParams();
   const { data: post, error, isError } = useFetchPostQuery(id ? id : skipToken);
-  console.log('post', post);
-
   const {
     data: comments,
     isLoading,
     isError: commentsError,
   } = useFetchCommentsQuery(id);
-  console.log('comments', comments);
-  const formattedComments = comments && comments.flat();
 
   useEffect(() => {
     isError && toast.error(error);
@@ -53,13 +49,13 @@ const PostDetail = () => {
       </Text>
       <CommentsForm post={post} />
       {isLoading && <Box>Loading Comments...</Box>}
-      {formattedComments && formattedComments.length > 0 && (
+      {comments && comments.length > 0 && (
         <Box mt={6}>
           <Heading size='md'>Comments</Heading>
-          {formattedComments.map((comment) => (
+          {comments.map((comment) => (
             <Box key={comment.id} bg='gray.100' p={4} borderRadius='md' mt={2}>
               <Text>{comment.email}</Text>
-              <Text mt={2}>{comment.comment}</Text>
+              <Text>${comment.comment}</Text>
             </Box>
           ))}
         </Box>
