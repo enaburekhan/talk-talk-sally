@@ -51,9 +51,25 @@ export const postsApi = createApi({
     fetchPost: builder.query({
       async queryFn(id) {
         try {
-          const docRef = doc(db, 'posts', id);
-          const snapshot = await getDoc(docRef);
-          return { data: snapshot.data() };
+          const postRef = doc(db, 'posts', id);
+          const postSnapshot = await getDoc(postRef);
+          const postData = postSnapshot.data();
+
+          // Fetch comments associated with the post
+          const commentsSnapshot = await getDocs(
+            collection(db, `posts/${id}/comments`)
+          );
+          const commentsData = commentsSnapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }));
+
+          // Include comments data in the post data
+          const postDataWithComments = {
+            ...postData,
+            comments: commentsData,
+          };
+          return { data: postDataWithComments };
         } catch (err) {
           return { error: err };
         }
@@ -161,7 +177,6 @@ export const postsApi = createApi({
             password
           );
           const user = userCredential.user;
-          console.log('user-signup', user);
           return { data: user };
         } catch (err) {
           return { error: err };
@@ -203,13 +218,14 @@ export const postsApi = createApi({
       queryFn: async ({ postId, email, comment }) => {
         try {
           const commentRef = await addDoc(
-            collection(db`posts/${postId}/comments`),
+            collection(db, `posts/${postId}/comments`),
             {
               email,
               comment,
               timestamp: serverTimestamp(),
             }
           );
+          console.log('commentRef', commentRef);
           return { data: { id: commentRef.id, email, comment } };
         } catch (error) {
           return { error };
@@ -227,6 +243,7 @@ export const postsApi = createApi({
             id: doc.id,
             ...doc.data(),
           }));
+          console.log('commentsData', commentsData);
           return { data: commentsData };
         } catch (error) {
           return { error };

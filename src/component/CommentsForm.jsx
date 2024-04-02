@@ -3,9 +3,11 @@ import { useState } from 'react';
 import { Mention, MentionsInput } from 'react-mentions';
 import { useUser } from './UserContext';
 import { useAddCommentMutation } from '../utils/postsApi';
+import { toast } from 'react-toastify';
+import { useParams } from 'react-router-dom';
 
-const CustomForm = ({ post }) => {
-  console.log('post.content', post?.content);
+const CommentsForm = ({ post }) => {
+  const { id: postId } = useParams();
   const [formState, setFormState] = useState({
     email: '',
     comment: '',
@@ -13,8 +15,10 @@ const CustomForm = ({ post }) => {
 
   const { user } = useUser();
   const [addComment] = useAddCommentMutation();
+  console.log('addComment', addComment);
 
-  const submit = async () => {
+  const submit = async (e) => {
+    e.preventDefault();
     if (!user) {
       alert('Please sign in to comment');
       return;
@@ -25,14 +29,16 @@ const CustomForm = ({ post }) => {
     }
     try {
       await addComment({
-        postId: post.id,
+        postId,
         email: user.email,
         comment: formState.comment,
       });
 
       setFormState({ ...formState, comment: '' });
+      toast.success('Comment added successfully');
     } catch (error) {
       console.error('Error adding comment:', error);
+      toast.error('Failed to add comment');
     }
   };
 
@@ -47,13 +53,7 @@ const CustomForm = ({ post }) => {
             setFormState({ ...formState, comment: e.target.value })
           }
         >
-          <Mention
-            trigger='@'
-            data={post?.content}
-            renderSuggestion={(suggestion, search, highlightedDisplay) => (
-              <div className='user'>{highlightedDisplay}</div>
-            )}
-          />
+          <Mention trigger='@' data={[{ id: 1, display: post?.author }]} />
         </MentionsInput>
         <button onClick={submit}>Submit</button>
       </Stack>
@@ -61,4 +61,4 @@ const CustomForm = ({ post }) => {
   );
 };
 
-export default CustomForm;
+export default CommentsForm;

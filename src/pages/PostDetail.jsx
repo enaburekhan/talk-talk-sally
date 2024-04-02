@@ -4,17 +4,20 @@ import { skipToken } from '@reduxjs/toolkit/query';
 import { useEffect } from 'react';
 import { Flex, Text, Box, Heading, Avatar } from '@chakra-ui/react';
 import { toast } from 'react-toastify';
-import CustomForm from '../component/CustomForm';
+import CommentsForm from '../component/CommentsForm';
 
 const PostDetail = () => {
   const { id } = useParams();
   const { data: post, error, isError } = useFetchPostQuery(id ? id : skipToken);
+  console.log('post', post);
 
   const {
     data: comments,
     isLoading,
     isError: commentsError,
-  } = useFetchCommentsQuery();
+  } = useFetchCommentsQuery(id);
+  console.log('comments', comments);
+  const formattedComments = comments && comments.flat();
 
   useEffect(() => {
     isError && toast.error(error);
@@ -48,17 +51,21 @@ const PostDetail = () => {
       <Text color='blue.600' fontSize='12px' fontWeight='800'>
         Created on: {post?.timestamp.toDate().toLocaleString()}
       </Text>
-      <CustomForm post={post} />
-      {comments && comments.length > 0 && (
+      <CommentsForm post={post} />
+      {isLoading && <Box>Loading Comments...</Box>}
+      {formattedComments && formattedComments.length > 0 && (
         <Box mt={6}>
           <Heading size='md'>Comments</Heading>
-          {comments.map((comment) => (
+          {formattedComments.map((comment) => (
             <Box key={comment.id} bg='gray.100' p={4} borderRadius='md' mt={2}>
               <Text>{comment.email}</Text>
               <Text mt={2}>{comment.comment}</Text>
             </Box>
           ))}
         </Box>
+      )}
+      {comments && comments.length === 0 && (
+        <Box mt={6}>No Comments yet. be the first one to comment!</Box>
       )}
     </Box>
   );
