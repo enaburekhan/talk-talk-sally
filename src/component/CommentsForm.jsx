@@ -1,4 +1,15 @@
-import { Box, Heading, Stack, Alert } from '@chakra-ui/react';
+import {
+  Box,
+  Heading,
+  Stack,
+  Alert,
+  Input,
+  useBreakpointValue,
+  Button,
+  FormControl,
+  Flex,
+  Textarea,
+} from '@chakra-ui/react';
 import { useState } from 'react';
 import { Mention, MentionsInput } from 'react-mentions';
 import { useUser } from './UserContext';
@@ -40,10 +51,14 @@ const CommentsForm = ({ post }) => {
     }
   };
 
+  const buttonSize = useBreakpointValue({ base: 'sm', md: 'md' });
+
   return (
-    <Box>
-      <Stack>
+    <Box width={{ base: '90%', md: '50%' }} p={4}>
+      <FormControl>
         <MentionsInput
+          as={Textarea}
+          size={{ base: 'sm', md: 'md' }}
           placeholder='Add a comment here'
           value={formState.comment}
           onChange={(e) =>
@@ -52,8 +67,17 @@ const CommentsForm = ({ post }) => {
         >
           <Mention trigger='@' data={[{ id: 1, display: post?.author }]} />
         </MentionsInput>
-        <button onClick={submit}>Submit</button>
-      </Stack>
+      </FormControl>
+      <Button
+        type='submit'
+        colorScheme='blue'
+        size={buttonSize}
+        mt={4}
+        onClick={submit}
+        width='100%'
+      >
+        Submit
+      </Button>
     </Box>
   );
 };
