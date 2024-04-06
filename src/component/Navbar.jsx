@@ -15,13 +15,17 @@ import {
   DrawerBody,
   DrawerCloseButton,
   Link,
+  Button,
+  useColorMode,
 } from '@chakra-ui/react';
-import { HamburgerIcon } from '@chakra-ui/icons';
+import { HamburgerIcon, MoonIcon, SunIcon } from '@chakra-ui/icons';
 import { useUserSignoutMutation } from '../utils/postsApi';
 import { useUser } from './UserContext';
 
 const Navbar = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { colorMode, toggleColorMode } = useColorMode();
+  const isDarkMode = colorMode === 'dark';
   const [userSignout] = useUserSignoutMutation();
   const navigate = useNavigate();
   const { user, setUser } = useUser();
@@ -76,6 +80,10 @@ const Navbar = () => {
         <Link as={RouterLink} to='/posts' color='white'>
           Posts
         </Link>
+        <Button onClick={toggleColorMode} aria-label='Toggle Dark Mode'>
+          {isDarkMode ? <MoonIcon /> : <SunIcon />}
+          {isDarkMode ? 'Dark Mode' : 'Light Mode'}
+        </Button>
 
         {user && (
           <>

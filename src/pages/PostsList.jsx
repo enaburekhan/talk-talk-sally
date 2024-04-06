@@ -35,7 +35,7 @@ const PostsList = () => {
       const dateB = moment(b.timestamp.toDate());
       const dateA1 = dateA.format('MMMM Do YYYY, h:mm:ss a');
       const dateB1 = dateB.format('MMMM Do YYYY, h:mm:ss a');
-      return dateA1.localeCompare(dateB1);
+      return dateB1.localeCompare(dateA1);
     });
   }, [posts]);
 
@@ -93,7 +93,6 @@ const PostsList = () => {
       mt='5px'
       gap={6}
       boxShadow='lg'
-      backgroundColor='#fefefe'
     >
       <Stack spacing={3} width={{ base: '90%', md: '500px' }}>
         <Input

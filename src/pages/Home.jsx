@@ -66,7 +66,7 @@ const Home = () => {
   const buttonSize = useBreakpointValue({ base: 'sm', md: 'md' });
   const headingSize = useBreakpointValue({ base: 'lg', md: 'xl' });
   return (
-    <Flex align='center' justify='center' minHeight='100vh' bg='#f0f0f0'>
+    <Flex align='center' justify='center' mt='20px'>
       <Box
         bg='#3333'
         w={{ base: '90%', md: '450px' }}

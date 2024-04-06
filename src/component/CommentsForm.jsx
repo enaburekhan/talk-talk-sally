@@ -1,13 +1,8 @@
 import {
   Box,
-  Heading,
-  Stack,
-  Alert,
-  Input,
   useBreakpointValue,
   Button,
   FormControl,
-  Flex,
   Textarea,
 } from '@chakra-ui/react';
 import { useState } from 'react';
@@ -54,12 +49,13 @@ const CommentsForm = ({ post }) => {
   const buttonSize = useBreakpointValue({ base: 'sm', md: 'md' });
 
   return (
-    <Box width={{ base: '90%', md: '50%' }} p={4}>
-      <FormControl>
+    <Box width={{ base: '90%', md: '50%' }}>
+      <FormControl bg='#fff'>
         <MentionsInput
           as={Textarea}
           size={{ base: 'sm', md: 'md' }}
           placeholder='Add a comment here'
+          placeholderTextColor='#666'
           value={formState.comment}
           onChange={(e) =>
             setFormState({ ...formState, comment: e.target.value })
@@ -74,7 +70,6 @@ const CommentsForm = ({ post }) => {
         size={buttonSize}
         mt={4}
         onClick={submit}
-        width='100%'
       >
         Submit
       </Button>

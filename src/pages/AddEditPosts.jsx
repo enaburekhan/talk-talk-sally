@@ -18,6 +18,8 @@ import {
   FormLabel,
   Heading,
   Input,
+  Stack,
+  useBreakpointValue,
 } from '@chakra-ui/react';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
@@ -140,10 +142,12 @@ const AddEditPosts = () => {
     }
   };
 
+  const buttonSize = useBreakpointValue({ base: 'sm', md: 'md' });
+
   return (
     <Box maxW='600px' mx='auto' mt='6'>
       <Heading>{id ? 'Update a Post' : 'Add a New Post'}</Heading>
-      <div>
+      <Stack spacing={4} mb='40px'>
         <Formik
           initialValues={formValues}
           validationSchema={SignupSchema}
@@ -152,25 +156,49 @@ const AddEditPosts = () => {
         >
           {({ errors, touched }) => (
             <Form>
-              <Field name='title' placeholder='Title' />
-              {errors.title && touched.title ? (
-                <Alert status='error'>{errors.title}</Alert>
-              ) : null}
-              <TinyMCEForm name='content' />
+              <FormControl>
+                <Field
+                  name='title'
+                  placeholder='Enter Title Here'
+                  as={Input}
+                  mb='10px'
+                  p='20px'
+                />
+                {errors.title && touched.title ? (
+                  <Alert status='error'>{errors.title}</Alert>
+                ) : null}
+              </FormControl>
 
+              <TinyMCEForm name='content' />
               {errors.content && touched.content ? (
                 <Alert status='error'>{errors.content}</Alert>
               ) : null}
-              <input type='file' onChange={(e) => setFile(e.target.files[0])} />
-              <Field name='author' type='string' placeholder='Author' />
-              {errors.author && touched.author ? (
-                <Alert status='error'>{errors.author}</Alert>
-              ) : null}
-              <button type='submit'>Submit</button>
+              <FormControl mb='10px'>
+                <Field
+                  name='author'
+                  type='string'
+                  placeholder='Enter Author Here'
+                  as={Input}
+                />
+                {errors.author && touched.author ? (
+                  <Alert status='error'>{errors.author}</Alert>
+                ) : null}
+              </FormControl>
+              <FormControl mb='10px'>
+                <input
+                  type='file'
+                  onChange={(e) => setFile(e.target.files[0])}
+                  p='20px'
+                />
+              </FormControl>
+
+              <Button type='submit' colorScheme='blue' size={buttonSize}>
+                Submit
+              </Button>
             </Form>
           )}
         </Formik>
-      </div>
+      </Stack>
     </Box>
   );
 };
