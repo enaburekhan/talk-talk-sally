@@ -12,10 +12,14 @@ import { useNavigate } from 'react-router-dom';
 import { useUser } from '../component/UserContext';
 import {
   Box,
-  FormControl,
   Heading,
   useBreakpointValue,
   Text,
+  Button,
+  Stack,
+  Flex,
+  FormControl,
+  Input,
 } from '@chakra-ui/react';
 
 const Home = () => {
@@ -60,59 +64,83 @@ const Home = () => {
   };
 
   const buttonSize = useBreakpointValue({ base: 'sm', md: 'md' });
+  const headingSize = useBreakpointValue({ base: 'lg', md: 'xl' });
   return (
-    <Box p={20}>
-      <Heading as='h6' mb={4}>
-        Signup or Signin to Create Posts
-      </Heading>
-      <Formik
-        initialValues={{
-          email: '',
-          password: '',
-        }}
-        validationSchema={userSchema}
-        onSubmit={async (values, { setSubmitting }) => {
-          handleFormSubmit(values, setSubmitting);
-        }}
+    <Flex align='center' justify='center' minHeight='100vh' bg='#f0f0f0'>
+      <Box
+        bg='#3333'
+        w={{ base: '90%', md: '450px' }}
+        p='20px'
+        borderRadius='md'
       >
-        {({ errors, touched, isSubmitting }) => (
-          <Form>
-            <FormControl mb={4}>
-              <Field name='email' type='email' placeholder='Email Address' />
-              {errors.email && touched.email ? (
-                <Text color='red'>{errors.email}</Text>
-              ) : null}
-            </FormControl>
-            <FormControl mb={4}>
-              <Field name='password' placeholder='Password' />
-              {errors.password && touched.password ? (
-                <Text>{errors.password}</Text>
-              ) : null}
-            </FormControl>
+        <Heading as='h1' size={headingSize} mb={4}>
+          Signup or Signin to Create Posts
+        </Heading>
+        <Formik
+          initialValues={{
+            email: '',
+            password: '',
+          }}
+          validationSchema={userSchema}
+          onSubmit={async (values, { setSubmitting }) => {
+            handleFormSubmit(values, setSubmitting);
+          }}
+        >
+          {({ errors, touched, isSubmitting }) => (
+            <Form>
+              <Stack spacing={4} mb='40px'>
+                <FormControl>
+                  <Field
+                    as={Input}
+                    name='email'
+                    type='email'
+                    placeholder='Email Address'
+                    mb='10px'
+                    p='20px'
+                  />
 
-            <button
-              type='submit'
-              colorScheme='blue'
-              size={buttonSize}
-              mb={4}
-              isLoading={isSubmitting}
-            >
-              {isSignup ? 'Signup' : 'Signin'}
-            </button>
-            <button
-              type='button'
-              colorScheme='blue'
-              size={buttonSize}
-              onClick={() => setIsSignup(!isSignup)}
-            >
-              {isSignup
-                ? 'Already have an account? Signin'
-                : "Don't have an account? Signup"}
-            </button>
-          </Form>
-        )}
-      </Formik>
-    </Box>
+                  {errors.email && touched.email && (
+                    <Text color='red'>{errors.email}</Text>
+                  )}
+                </FormControl>
+                <FormControl>
+                  <Field
+                    name='password'
+                    placeholder='Password'
+                    p='20px'
+                    as={Input}
+                  />
+                  {errors.password && touched.password && (
+                    <Text color='red'>{errors.password}</Text>
+                  )}
+                </FormControl>
+              </Stack>
+              <Stack>
+                <Button
+                  type='submit'
+                  colorScheme='blue'
+                  size={buttonSize}
+                  mb={4}
+                  isLoading={isSubmitting}
+                >
+                  {isSignup ? 'Signup' : 'Signin'}
+                </Button>
+                <Button
+                  type='button'
+                  colorScheme='blue'
+                  size={buttonSize}
+                  onClick={() => setIsSignup(!isSignup)}
+                >
+                  {isSignup
+                    ? 'Already have an account? Signin'
+                    : "Don't have an account? Signup"}
+                </Button>
+              </Stack>
+            </Form>
+          )}
+        </Formik>
+      </Box>
+    </Flex>
   );
 };
 
