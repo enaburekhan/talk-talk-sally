@@ -108,7 +108,7 @@ const Navbar = () => {
                 <Link
                   as={RouterLink}
                   to='/posts'
-                  color='black'
+                  color='#fff'
                   onClick={onClose}
                 >
                   Posts
@@ -118,7 +118,7 @@ const Navbar = () => {
                     <Link
                       as={RouterLink}
                       to='/addPost'
-                      color='black'
+                      color='#fff'
                       onClick={onClose}
                     >
                       AddPost
@@ -127,7 +127,7 @@ const Navbar = () => {
                     <Link
                       as={RouterLink}
                       to='/'
-                      color='black'
+                      color='#fff'
                       onClick={() => {
                         handleSignout();
                         onClose();
