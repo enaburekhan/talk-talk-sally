@@ -3,7 +3,6 @@ import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import {
   Flex,
   Box,
-  Text,
   HStack,
   VStack,
   IconButton,
@@ -108,17 +107,21 @@ const Navbar = () => {
                 <Link
                   as={RouterLink}
                   to='/posts'
-                  color='#fff'
+                  color='blue'
                   onClick={onClose}
                 >
                   Posts
                 </Link>
+                <Button onClick={toggleColorMode} aria-label='Toggle Dark Mode'>
+                  {isDarkMode ? <MoonIcon /> : <SunIcon />}
+                  {isDarkMode ? 'Dark Mode' : 'Light Mode'}
+                </Button>
                 {user && (
                   <>
                     <Link
                       as={RouterLink}
                       to='/addPost'
-                      color='#fff'
+                      color='blue'
                       onClick={onClose}
                     >
                       AddPost
@@ -127,7 +130,7 @@ const Navbar = () => {
                     <Link
                       as={RouterLink}
                       to='/'
-                      color='#fff'
+                      color='blue'
                       onClick={() => {
                         handleSignout();
                         onClose();

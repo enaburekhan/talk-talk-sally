@@ -24,10 +24,12 @@ import {
 } from '@chakra-ui/react';
 import CustomButtonLink from '../component/CustomButtonLink';
 import moment from 'moment/moment';
+import { useUser } from '../component/UserContext';
 
 const PostsList = () => {
   const [searchField, setSearchField] = useState('');
   const { data: posts = [], isLoading, isError, error } = useFetchPostsQuery();
+  const { user } = useUser();
 
   const sortedPosts = useMemo(() => {
     return [...posts].sort((a, b) => {
@@ -146,7 +148,7 @@ const PostsList = () => {
                         </Link>
                       </Flex>
 
-                      <Text fontSize='14px' color='#333'>
+                      <Text fontSize='14px' color='blue.600'>
                         Author: {post.author}
                       </Text>
                       <Text color='blue.600' fontSize='10px'>
@@ -164,27 +166,31 @@ const PostsList = () => {
                     >
                       <Box fontSize='sm'>{<ReactionButtons post={post} />}</Box>
 
-                      <CustomButtonLink
-                        to={`/update/${post.id}`}
-                        color='#fff'
-                        fontSize='12px'
-                        backgroundColor='blue.500'
-                        _hover={{ backgroundColor: 'blue.400' }}
-                        textAlign='center'
-                        py={2}
-                        borderRadius='5px'
-                      >
-                        Update Post
-                      </CustomButtonLink>
-                      <Button
-                        type='button'
-                        onClick={() => handleDelete(post.id)}
-                        variant='ghost'
-                        colorScheme='blue'
-                        fontSize='12px'
-                      >
-                        Delete Post
-                      </Button>
+                      {user && (
+                        <>
+                          <CustomButtonLink
+                            to={`/update/${post.id}`}
+                            color='#fff'
+                            fontSize='12px'
+                            backgroundColor='blue.500'
+                            _hover={{ backgroundColor: 'blue.400' }}
+                            textAlign='center'
+                            py={2}
+                            borderRadius='5px'
+                          >
+                            Update Post
+                          </CustomButtonLink>
+                          <Button
+                            type='button'
+                            onClick={() => handleDelete(post.id)}
+                            variant='ghost'
+                            colorScheme='blue'
+                            fontSize='12px'
+                          >
+                            Delete Post
+                          </Button>
+                        </>
+                      )}
                     </SimpleGrid>
                   </CardFooter>
                 </Card>
@@ -209,7 +215,7 @@ const PostsList = () => {
                       <Link as={RouterLink} to={`/detail/${post.id}`}>
                         View More
                       </Link>
-                      <Text fontSize='14px' color='#333'>
+                      <Text fontSize='14px' color='blue.600'>
                         Author: {post.author}
                       </Text>
                       <Text color='blue.600' fontSize='10px'>

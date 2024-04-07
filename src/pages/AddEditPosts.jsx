@@ -15,7 +15,6 @@ import {
   Box,
   Button,
   FormControl,
-  FormLabel,
   Heading,
   Input,
   Stack,
@@ -55,7 +54,7 @@ const AddEditPosts = () => {
   const SignupSchema = Yup.object().shape({
     title: Yup.string()
       .min(3, 'Too Short!')
-      .max(50, 'Too Long!')
+      .max(70, 'Too Long!')
       .required('Required'),
     content: Yup.string().required('Required'),
     author: Yup.string()
@@ -145,9 +144,11 @@ const AddEditPosts = () => {
   const buttonSize = useBreakpointValue({ base: 'sm', md: 'md' });
 
   return (
-    <Box maxW='600px' mx='auto' mt='6'>
-      <Heading>{id ? 'Update a Post' : 'Add a New Post'}</Heading>
-      <Stack spacing={4} mb='40px'>
+    <Box maxW='600px' mx='auto' mt='6' px={{ base: '4', md: '0' }}>
+      <Heading textAlign='center'>
+        {id ? 'Update a Post' : 'Add a New Post'}
+      </Heading>
+      <Stack spacing={4} mt='6'>
         <Formik
           initialValues={formValues}
           validationSchema={SignupSchema}
@@ -162,7 +163,7 @@ const AddEditPosts = () => {
                   placeholder='Enter Title Here'
                   as={Input}
                   mb='10px'
-                  p='20px'
+                  // p='20px'
                 />
                 {errors.title && touched.title ? (
                   <Alert status='error'>{errors.title}</Alert>
