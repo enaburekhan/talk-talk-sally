@@ -33,11 +33,13 @@ const PostsList = () => {
 
   const sortedPosts = useMemo(() => {
     return [...posts].sort((a, b) => {
-      const dateA = moment(a.timestamp.toDate());
-      const dateB = moment(b.timestamp.toDate());
-      const dateA1 = dateA.format('MMMM Do YYYY, h:mm:ss a');
-      const dateB1 = dateB.format('MMMM Do YYYY, h:mm:ss a');
-      return dateB1.localeCompare(dateA1);
+      const dateA = moment(a.timestamp.toDate()).format(
+        'MMMM Do YYYY, h:mm:ss a'
+      );
+      const dateB = moment(b.timestamp.toDate()).format(
+        'MMMM Do YYYY, h:mm:ss a'
+      );
+      return dateB - dateA;
     });
   }, [posts]);
 
