@@ -39,7 +39,7 @@ const PostsList = () => {
       const dateB = moment(b.timestamp.toDate()).format(
         'MMMM Do YYYY, h:mm:ss a'
       );
-      return dateB - dateA;
+      return dateA - dateB;
     });
   }, [posts]);
 
