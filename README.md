@@ -12,7 +12,7 @@ I am pleased to introduce TalkTalkSally, my blogging platform designed to facili
 
 ### Live Demo:
 
-[TalkTalkSally-app]()
+[TalkTalkSally-app](https://talk-talk-sally-blog.netlify.app)
 
 ## Screenshot
 
