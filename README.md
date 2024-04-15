@@ -18,7 +18,7 @@ I am pleased to introduce TalkTalkSally, my blogging platform designed to facili
 
 ## Screenshot
 
-![TalkTalkSally-app](https://github.com/enaburekhan/talk-talk-sally/assets/51296741/d7371110-10f4-4769-acca-a6e86a38b2b3)
+![TalkTalkSally-app](https://github.com/enaburekhan/talk-talk-sally/assets/51296741/59144613-c59d-44b1-a4cd-31d13dafbc57)
 
 ## Built-With
 
