@@ -41,7 +41,7 @@ I am pleased to introduce TalkTalkSally, my blogging platform designed to facili
 6. Sign up with an email address
 7. Enter password
 
-## User Flow:
+## User Flow: Explore the User flow diagram to understand the platform's navigation and functionality.
 
 [User Flow Diagram](https://www.figma.com/file/cECuBfzfqbf3SRqzLjYNAS/User-flow-Diagram?type=whiteboard&node-id=0%3A1&t=EaCekOzbMEMBlSCI-1)
 
@@ -55,8 +55,8 @@ I am pleased to introduce TalkTalkSally, my blogging platform designed to facili
 
 ## Show your support
 
-Kindly ⭐ Star this project on GitHub — it helps!
+Your support by starring ⭐ this project on GitHub is greatly appreciated.
 
 ## Acknowledgments
 
-- Open Source Community
+- My gratitude extends to the open-source community for its invaluable contributions to web development
