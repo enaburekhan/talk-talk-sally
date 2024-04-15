@@ -2,13 +2,15 @@
 
 I am pleased to introduce TalkTalkSally, my blogging platform designed to facilitate the sharing of ideas with a global audience. Whether the topics revolve around coding, cybersecurity, history, sailing, or any other subject of interest, TalkTalkSally provides a platform for like-minded individuals to engage in meaningful discourse and share their insights with the world. I warmly invite fellow enthusiasts to join me in utilizing this platform to amplify our collective voices and contribute to the broader conversation.
 
-### Key Features of the Project
+### Project Highlights
 
-- Seamless User Authentication: Users can easily sign up and log in to access the platform's functionalities.
-- Comprehensive Post Management: Authenticated users can create, view, update, and delete posts according to their preferences.
-- Interactive Engagement: Authenticated users have the ability to engage with posts by commenting on them and reacting to their content.
-- Limited Access for Non-Logged-In Users: Non-logged-in users are restricted to reading posts, ensuring a seamless browsing experience.
-- Dynamic Theme Options: The project offers both dark and light mode features, allowing users to customize their viewing experience according to their preferences.
+- User-Friendly Authentication: Simplified signup and login processes facilitate seamless access to the platform's features.
+- Robust Post Management: Authenticated users enjoy full control over posts, including creation, viewing, updating, and deletion.
+- Engaging Interaction: Users can actively engage with posts through comments and reactions, fostering a dynamic community environment.
+- Restricted Access for Guests: Non-logged-in visitors are limited to reading posts, ensuring a smooth browsing experience.
+- Flexible Theme Options: With both dark and light mode functionalities, users can customize their viewing experience to suit their preferences.
+- Responsive Design: The application's responsive styling ensures optimal performance across various desktop and mobile devices, enhancing accessibility and usability.
+- Accessibility Focus: The app prioritizes accessibility, making it user-friendly for individuals with diverse abilities to navigate and utilize effectively.
 
 ### Live Demo:
 
@@ -21,7 +23,7 @@ I am pleased to introduce TalkTalkSally, my blogging platform designed to facili
 ## Built-With
 
 - React
-- Redux RTK Query using FakebaseQuery
+- Redux RTK Query with FakebaseQuery
 - Firebase/Firestore database
 - Chakra-ui
 - TinyMce Rich Text Editor
