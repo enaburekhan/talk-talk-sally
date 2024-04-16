@@ -45,6 +45,10 @@ I am pleased to introduce TalkTalkSally, my blogging platform designed to facili
 
 [User Flow Diagram](https://www.figma.com/file/cECuBfzfqbf3SRqzLjYNAS/User-flow-Diagram?type=whiteboard&node-id=0%3A1&t=EaCekOzbMEMBlSCI-1)
 
+### TalkTalkSally Persona:
+
+[TalkTalkSally-Persona](https://docs.google.com/document/d/1Wv_gUCJhS3Ef9haIkkjS0rfZDTxoJ0aJMBY7zFKEiZ0/edit?usp=sharing)
+
 ## Author Details:
 
 👤 **Eric Enaburekhan**
