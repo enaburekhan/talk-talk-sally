@@ -74,7 +74,7 @@ const Home = () => {
         borderRadius='md'
       >
         <Heading as='h1' size={headingSize} mb={4}>
-          Signup or Signin to Create Posts
+          Signin to Create Posts
         </Heading>
         <Formik
           initialValues={{
@@ -106,6 +106,7 @@ const Home = () => {
                 <FormControl>
                   <Field
                     name='password'
+                    type='password'
                     placeholder='Password'
                     p='20px'
                     as={Input}
@@ -127,7 +128,7 @@ const Home = () => {
                 </Button>
                 <Button
                   type='button'
-                  colorScheme='blue'
+                  colorScheme='gray'
                   size={buttonSize}
                   onClick={() => setIsSignup(!isSignup)}
                 >
