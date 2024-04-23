@@ -36,10 +36,12 @@ I am pleased to introduce TalkTalkSally, my blogging platform designed to facili
 1. Clone this project: git clone https://github.com/enaburekhan/talk-talk-sally.git
 2. Cd into the cloned directory
 3. Install the required dependencies by using: `npm install`
-4. run `npm run dev`
-5. Enter `http://localhost:5173/` in the browser to display the application.
-6. Sign up with an email address
-7. Enter password
+4. Create an account in firebase/firestore and get your api-key
+5. Add your api-key to the firebaseConfig object
+6. run `npm run dev`
+7. Enter `http://localhost:5173/` in the browser to display the application.
+8. Sign up with an email address
+9. Enter password
 
 ### User Flow: Explore the User flow diagram to understand the platform's navigation and functionality.
 
