@@ -8,7 +8,6 @@ import {
   Box,
   Heading,
   Avatar,
-  Button,
   Spinner,
   useColorMode,
 } from '@chakra-ui/react';

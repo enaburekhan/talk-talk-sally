@@ -30,10 +30,11 @@ const Navbar = () => {
   const { user, setUser } = useUser();
 
   useEffect(() => {
-    if (user) {
-      localStorage.setItem('user', JSON.stringify(user));
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
     }
-  }, [user]);
+  }, [setUser]);
 
   const handleSignout = async () => {
     try {
