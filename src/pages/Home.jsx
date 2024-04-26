@@ -74,7 +74,7 @@ const Home = () => {
         borderRadius='md'
       >
         <Heading as='h1' size={headingSize} mb={4}>
-          Signin to Create Posts
+          Signup to Create Posts
         </Heading>
         <Formik
           initialValues={{
