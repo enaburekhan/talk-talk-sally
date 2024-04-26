@@ -8,6 +8,7 @@ import PostDetail from './pages/PostDetail';
 import { Box } from '@chakra-ui/react';
 import Home from './pages/Home';
 import { UserProvider } from './component/UserContext';
+import NotFound from './pages/NotFound';
 
 export default function App() {
   return (
@@ -23,6 +24,7 @@ export default function App() {
             <Route path='/update/:id' element={<AddEditPosts />} />
 
             <Route path='/detail/:id' element={<PostDetail />} />
+            <Route path='*' element={<NotFound />} />
           </Routes>
         </UserProvider>
       </Router>
