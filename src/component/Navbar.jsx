@@ -30,10 +30,11 @@ const Navbar = () => {
   const { user, setUser } = useUser();
 
   useEffect(() => {
-    if (user) {
-      localStorage.setItem('user', JSON.stringify(user));
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
     }
-  }, [user]);
+  }, [setUser]);
 
   const handleSignout = async () => {
     try {
@@ -47,8 +48,15 @@ const Navbar = () => {
   };
 
   return (
-    <Flex p={4} bg='blue.500' align='center' justify='space-between'>
-      <Box>
+    <Flex
+      p={4}
+      bg='blue.500'
+      align='center'
+      justify='space-between'
+      direction={{ base: 'row', md: 'row' }}
+      gap={2}
+    >
+      <Box mb={{ base: 4, md: 0 }}>
         <Link
           as={RouterLink}
           to='/'
@@ -71,30 +79,34 @@ const Navbar = () => {
         />
       </Box>
 
-      {/* Display Navigation Links on Desktop */}
-      <HStack
-        spacing={{ base: 2, md: 4 }}
+      {/* Display Navigation Links on Desktop or Drawer on mobile */}
+      <Box
         display={{ base: 'none', md: 'flex' }}
+        alignItems='center'
+        justifyContent='space-between'
+        flex={1}
       >
-        <Link as={RouterLink} to='/posts' color='white'>
-          Posts
-        </Link>
-        <Button onClick={toggleColorMode} aria-label='Toggle Dark Mode'>
-          {isDarkMode ? <MoonIcon /> : <SunIcon />}
-          {isDarkMode ? 'Dark Mode' : 'Light Mode'}
-        </Button>
+        <HStack spacing={{ base: 2, md: 4 }}>
+          <Link as={RouterLink} to='/posts' color='white'>
+            Posts
+          </Link>
+          <Button onClick={toggleColorMode} aria-label='Toggle Dark Mode'>
+            {isDarkMode ? <MoonIcon /> : <SunIcon />}
+            {isDarkMode ? 'Dark Mode' : 'Light Mode'}
+          </Button>
+        </HStack>
 
         {user && (
-          <>
+          <HStack spacing={4}>
             <Link as={RouterLink} to='/addPost' color='white'>
               AddPost
             </Link>
             <Link as={RouterLink} to='/' color='white' onClick={handleSignout}>
               SignOut
             </Link>
-          </>
+          </HStack>
         )}
-      </HStack>
+      </Box>
 
       {/* Drawer for Mobile Navigation */}
       <Drawer placement='right' onClose={onClose} isOpen={isOpen}>

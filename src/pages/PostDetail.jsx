@@ -8,7 +8,6 @@ import {
   Box,
   Heading,
   Avatar,
-  Button,
   Spinner,
   useColorMode,
 } from '@chakra-ui/react';
@@ -38,13 +37,12 @@ const PostDetail = () => {
     <Flex
       direction='column'
       align='center'
-      justify='flex-start'
       p={4}
       bg={colorMode === 'dark' ? 'gray.800' : 'gray.50'}
       color={colorMode === 'dark' ? 'white' : 'black'}
     >
-      <Box maxW={['90%', '90%', '600px']} w='100%'>
-        <Box mb='4'>
+      <Box maxW='800px' w='100%' px={[4, 6, 8]}>
+        <Flex align='center' mb='4'>
           <Avatar
             src={post?.imgURL}
             name={post?.title}
@@ -52,18 +50,20 @@ const PostDetail = () => {
             mr='2'
           />
 
-          <Text
-            fontSize='sm'
-            fontWeight='bold'
-            // color={colorMode === 'dark' ? 'black' : 'white'}
-          >
+          <Text fontSize='sm' fontWeight='bold'>
             Written by {post?.author}
           </Text>
-        </Box>
+        </Flex>
 
-        <Heading mb='4'>{post?.title}</Heading>
+        <Heading mb='4' fontSize={['xl', '2xl', '3xl']}>
+          {post?.title}
+        </Heading>
 
-        <Box dangerouslySetInnerHTML={{ __html: post?.content }} mb='4' />
+        <Box
+          dangerouslySetInnerHTML={{ __html: post?.content }}
+          mb='4'
+          fontSize={['sm', 'md', 'lg']}
+        />
 
         <Text fontSize='sm' fontWeight='bold' mb='4'>
           Created on: {post?.timestamp.toDate().toLocaleString()}
