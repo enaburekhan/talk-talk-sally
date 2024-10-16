@@ -1,6 +1,6 @@
 # TalkTalkSally
 
-I am pleased to introduce TalkTalkSally, my blogging platform designed to facilitate the sharing of ideas with a global audience. Whether the topics revolve around coding, cybersecurity, history, sailing, or any other subject of interest, TalkTalkSally provides a platform for like-minded individuals to engage in meaningful discourse and share their insights with the world. I warmly invite fellow enthusiasts to join me in utilizing this platform to amplify our collective voices and contribute to the broader conversation.
+I am pleased to introduce TalkTalkSally, a blogging platform designed to facilitate the sharing of ideas with a global audience. Whether the topics revolve around coding, cybersecurity, history, sailing, or any other subject of interest, TalkTalkSally provides a platform for like-minded individuals to engage in meaningful discourse and share their insights with the world. I warmly invite fellow enthusiasts to join me in utilizing this platform to amplify our collective voices and contribute to the broader conversation.
 
 ### Project Highlights
 

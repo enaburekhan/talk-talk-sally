@@ -12,7 +12,6 @@ import { useNavigate } from 'react-router-dom';
 import { useUser } from '../component/UserContext';
 import {
   Box,
-  Heading,
   useBreakpointValue,
   Text,
   Button,
@@ -64,18 +63,43 @@ const Home = () => {
   };
 
   const buttonSize = useBreakpointValue({ base: 'sm', md: 'md' });
+  const textSize = useBreakpointValue({ base: 'sm', md: 'md' });
   const headingSize = useBreakpointValue({ base: 'lg', md: 'xl' });
   return (
-    <Flex align='center' justify='center' mt='20px'>
-      <Box
-        bg='#3333'
-        w={{ base: '90%', md: '450px' }}
-        p='20px'
-        borderRadius='md'
+    <Flex align='center' 
+    justify='center' 
+    direction='column' 
+    minH='100vh'
+    bg='gray.800'
+    p={6}
+    >
+      <Text 
+       fontSize={headingSize}
+       fontWeight='bold'
+       textAlign='center'
+       color='white'
+       mb={8} 
+       >
+          Welcome to TalkTalkSally: Share Your Thoughts with the World
+      </Text>
+      <Text
+        fontSize='lg'
+        textAlign='center'
+        color='whiteAlpha.800'
+        maxW='600px'
+        mb={10}
       >
-        <Heading as='h1' size={headingSize} mb={4}>
-          Signup to Create Posts
-        </Heading>
+        TalkTalkSally is a platform where like-minded individuals can come together to discuss, share ideas, and express their views
+        on various topics. Join our community today and start sharing your Thoughts with the world.
+      </Text>
+      <Box
+        bg='white'
+        w={{ base: '90%', md: '400px' }}
+        p='6'
+        borderRadius='lg'
+        boxShadow='xl'
+      >
+        
         <Formik
           initialValues={{
             email: '',
@@ -88,53 +112,62 @@ const Home = () => {
         >
           {({ errors, touched, isSubmitting }) => (
             <Form>
-              <Stack spacing={4} mb='40px'>
+              <Stack spacing={4}>
                 <FormControl>
                   <Field
                     as={Input}
                     name='email'
                     type='email'
                     placeholder='Email Address'
-                    mb='10px'
-                    p='20px'
+                    p={4}
+                    borderColor='gray.300'
                   />
 
                   {errors.email && touched.email && (
-                    <Text color='red'>{errors.email}</Text>
+                    <Text color='red.500' fontSize='sm' mt={1}>
+                      {errors.email}
+                    </Text>
                   )}
                 </FormControl>
+
                 <FormControl>
                   <Field
                     name='password'
                     type='password'
                     placeholder='Password'
-                    p='20px'
+                    p={4}
                     as={Input}
+                    borderColor='gray.300'
                   />
                   {errors.password && touched.password && (
-                    <Text color='red'>{errors.password}</Text>
+                    <Text color='red.500' fontSize='sm' mt={1}>
+                      {errors.password}
+                    </Text>
                   )}
                 </FormControl>
               </Stack>
-              <Stack>
+
+              <Stack spacing={4} mt={6}>
                 <Button
                   type='submit'
                   colorScheme='blue'
                   size={buttonSize}
-                  mb={4}
                   isLoading={isSubmitting}
                 >
                   {isSignup ? 'Signup' : 'Signin'}
                 </Button>
                 <Button
                   type='button'
-                  colorScheme='gray'
+                  variant='outline'
+                  colorScheme='blue'
                   size={buttonSize}
                   onClick={() => setIsSignup(!isSignup)}
                 >
+                  <Text fontSize={textSize}>
                   {isSignup
                     ? 'Already have an account? Signin'
                     : "Don't have an account? Signup"}
+                  </Text>
                 </Button>
               </Stack>
             </Form>
