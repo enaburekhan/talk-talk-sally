@@ -1,5 +1,3 @@
-// import { Text } from '@chakra-ui/react';
-
 import React, { useState } from 'react';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
@@ -19,6 +17,7 @@ import {
   Flex,
   FormControl,
   Input,
+  useColorModeValue
 } from '@chakra-ui/react';
 
 const Home = () => {
@@ -65,19 +64,23 @@ const Home = () => {
   const buttonSize = useBreakpointValue({ base: 'sm', md: 'md' });
   const textSize = useBreakpointValue({ base: 'sm', md: 'md' });
   const headingSize = useBreakpointValue({ base: 'lg', md: 'xl' });
+
+  // Define dynamic text colors
+  const headingColor = useColorModeValue('gray.800', 'white');
+  const subTextColor = useColorModeValue('gray.600', 'whiteAlpha.800');
+
   return (
     <Flex align='center' 
     justify='center' 
     direction='column' 
     minH='100vh'
-    bg='gray.800'
     p={6}
     >
       <Text 
        fontSize={headingSize}
        fontWeight='bold'
        textAlign='center'
-       color='white'
+       color= {headingColor}  // use dynamic color
        mb={8} 
        >
           Welcome to TalkTalkSally: Share Your Thoughts with the World
@@ -85,7 +88,7 @@ const Home = () => {
       <Text
         fontSize='lg'
         textAlign='center'
-        color='whiteAlpha.800'
+        color= {subTextColor} // use dynamic color
         maxW='600px'
         mb={10}
       >
