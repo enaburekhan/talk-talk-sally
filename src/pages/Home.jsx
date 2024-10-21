@@ -124,6 +124,8 @@ const Home = () => {
                     placeholder='Email Address'
                     p={4}
                     borderColor='gray.300'
+                    color='#333'
+                    _placeholder={{ color: useColorModeValue('gray.500', 'gray.400') }} // dynamic placeholder color
                   />
 
                   {errors.email && touched.email && (
@@ -141,6 +143,8 @@ const Home = () => {
                     p={4}
                     as={Input}
                     borderColor='gray.300'
+                    color='#333'
+                    _placeholder={{ color: useColorModeValue('gray.500', 'gray.400') }} // dynamic placeholder color
                   />
                   {errors.password && touched.password && (
                     <Text color='red.500' fontSize='sm' mt={1}>
